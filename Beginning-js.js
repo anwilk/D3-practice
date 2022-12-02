@@ -1,3 +1,1 @@
-console.log("-------------");
-console.log("Rise and Shine, welcome to the new world")
-console.log("------------------")
+import * as d3 from "https://cdn.skypack.dev/d3@7"
