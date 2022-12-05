@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta charset="utf-8">
 <head>
 <title> New Test Title? </title>
 </head>
@@ -22,8 +23,22 @@
 
 <!-- Add a svg shape -->
 <svg>
-    <circle style="fill: #69b3a2" stroke="black" cx="50"  cy=50 r=40> </circle>
-  </svg>
+    <circle class="target" style="fill: #69b3a2" stroke="black" cx="50"  cy=50 r=40> </circle>
+</svg>
 
-</body>
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Source our script that alters object with class "target"--->
+<script src="/Beginning-js.js"></script> <!--- it works!-->
+
+<!-- New svg area, empty svg -->
+<!-- Load D3-->
+<script src = "https://d3js.org/d3.v4.js"></script>
+<svg id = "map"></svg>
+<script src = "map_scripts.js"></script>
+
+
 </html>
+
+
