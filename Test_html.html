@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v7.js"></script>
+    <!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
+    
+    <script>
+    const projection = d3.geoEqualEarth();
+    const path = d3.geoPath(projection);
+    </script>
+
 <title> New Test Title? </title>
 </head>
 
@@ -25,19 +37,18 @@
 <svg>
     <circle class="target" style="fill: #69b3a2" stroke="black" cx="50"  cy=50 r=40> </circle>
 </svg>
-
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
-
 <!-- Source our script that alters object with class "target"--->
-<script src="/Beginning-js.js"></script> <!--- it works!-->
-
 <!-- New svg area, empty svg -->
-<!-- Load D3-->
-<script src = "https://d3js.org/d3.v4.js"></script>
-<svg id = "map"></svg>
-<script src = "map_scripts.js"></script>
+<pre id="explore">"This is explore"</pre>
 
+<div id="content">
+    <svg width="1500px" height="800px">
+      <g class="map"></g>
+      <g id = "points" class="map"></g>
+    </svg>
+  </div>
+
+  <script src = "map.js"></script>
 
 </html>
 
