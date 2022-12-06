@@ -41,7 +41,7 @@ async function load_and_plot() {
     .join("path")
     .attr("d", geoGenerator)
     .attr("fill", "black")
-  .on("mouseover", institute_mouse)
+    .on("mouseover", institute_mouse)
     
 }
 
