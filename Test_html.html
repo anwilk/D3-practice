@@ -1,54 +1,44 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-    <!-- Load d3.js -->
-    <script src="https://d3js.org/d3.v7.js"></script>
-    <!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
-    <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
-    
-    <script>
-    const projection = d3.geoEqualEarth();
-    const path = d3.geoPath(projection);
-    </script>
-
-<title> New Test Title? </title>
+  <link rel = 'stylesheet', href="./stylesheet.css", type="text/css">
+  <!-- Load d3.js -->
+  <!-- load d3 scripts, array and geo are specific below, but notneeded -->
+  <script src="https://d3js.org/d3.v7.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script> -->
+  <title> Map of Microplastics institutions </title>
 </head>
 
+<body >
+  <div>
+  <h1 >Microplastics Institutions</h1>
+</div>
+<!-- Divider for content--->
+<div id="content"> <!---Container for Map-->
+<!-- Source script -->
+<script src="./map.js"></script>
+</div>
 
-<body>
-<!-- Add a title -->
-<h1>First html document</h1>
 
-<!-- Add a bit of text -->
-<p>This is my first sentence</p>
+<!-- details container -->
+<div id = 'details' class = 'popup'>
+  <span class = "popuptext" id = "locPopup"> </span>
+</div>
 
-<!-- Add a link -->
-<p>This is <a href="https://www.d3-graph-gallery.com">a link to the d3 graph gallery</a></p>
+<div class="popup" onclick="myFunction()">Click me to toggle the popup!
+  <span class="popuptext" id="myPopup">A Simple Popup!</span>
+</div>
 
-<!-- Add a legend -->
-<p>This is my legend, I'm just trying to figure things out right now</p>
+<script>
+  // When the user clicks on div, open the popup
+  function myFunction() {
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
+  }
+</script>
 
-<!-- New Header -->
-<h2>Header Number two to mess with things</h2>
-
-<!-- Add a svg shape -->
-<svg>
-    <circle class="target" style="fill: #69b3a2" stroke="black" cx="50"  cy=50 r=40> </circle>
-</svg>
-<!-- Source our script that alters object with class "target"--->
-<!-- New svg area, empty svg -->
-<pre id="explore">"This is explore"</pre>
-
-<div id="content">
-    <svg width="1500px" height="800px">
-      <g class="map"></g>
-      <g id = "points" class="map"></g>
-    </svg>
-  </div>
-
-  <script src = "map.js"></script>
+</body>
 
 </html>
 
