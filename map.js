@@ -54,7 +54,7 @@ async function load_and_plot() {
     .attr("stroke", "black")
     .on('mouseenter', showTooltip)
     .on('mouseout', hideTooltip)
-  .on('click', showDetails)
+    .on('click', showDetails)
   
 // Tooltip on mouseover section ----------
 // We add a <div> container for the tooltip, which is hidden by default.
@@ -93,60 +93,40 @@ function showTooltip(event, datum) {
 }
 
 //Details on click section --------
-  function showDetails(event, datum) {
+  async function showDetails(event, datum) {
+    
+   d3.select('table').remove()
+
     //Get data
-    id = datum.properties
+    const obj = (datum.properties)
+    const entries = Object.entries(obj)
+
+    //Create table in the detials <div>
+    var table = d3.select('#details').append('table')
+    thead = table.append("thead").append("tr")
+    tbody = table.append('tbody')
+
+    //Create row for each "data"
+    var rows = tbody
+        .selectAll('tr')
+        .data(entries)
+        .enter()
+      .append('tr')
     
-    d3.select("#locPopup")
-    d3.select("#locPopup")
+    //Create table cells
+    var td = rows.selectAll("td")
+      .data(function (d) { return d; })
+      .enter()
+      .append("td")
+      .append("a")
+      //.html(function (d) { if (JSON.stringify(d).includes("http")) {return `"<a href = ${d}</a>"`} else { return d } })
+      .html(function(d){return(d)})
+
+
+    console.log(entries)
+
+
   }
-  //handle click by updating state
-  function institute_mouse(event, datum) {
-    
-    console.log(event)
-    console.log(datum.properties.location)
-    
-    
-    //var dat = data(points.features)(e.path)
-
-  }
-  
-  
-//   //Tooltip creator
-//   function showTooltip(f) {
-//   // Calculate the absolute left and top offsets of the tooltip. If the
-//   // mouse is close to the right border of the map, show the tooltip on
-//   // the left.
-//   var left = Math.min(width - 4 * d.name.length, mouse[0] + 5);
-//   var top = mouse[1] + 25;
-
-//   // Show the tooltip (unhide it) and set the name of the data entry.
-//   // Set the position as calculated before.
-//   tooltip.classed('hidden', false)
-//     .attr("style", "left:" + left + "px; top:" + top + "px")
-//     .html(d);
-// }
-  
-  
-//     // Define the zoom and attach it to the map
-//   var zoom = d3.behavior.zoom()
-//     .scaleExtent([1, 10])
-//     .on('zoom', doZoom);
-//     svg.call(zoom);
-  
-//   function doZoom() {
-//   mapFeatures.attr("transform",
-//     "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
-//   } 
-
-//   // Functions to deal with later ---------
-//   //Clicker state object with location attribute
-//   let state = {
-// 	mouseLocation: null
-//   }
-
-  
-
     
 }
 
