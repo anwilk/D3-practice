@@ -10,19 +10,22 @@
   <title> Map of Microplastics institutions </title>
 </head>
 
-<body style = "text-align:center;">
-<h2>Microplastics Institutions</h2>
+<body >
+  <div>
+  <h1 >Microplastics Institutions</h1>
+</div>
+<!-- Divider for content--->
+<div id="content"> <!---Container for Map-->
+<!-- Source script -->
+<script src="./map.js"></script>
+</div>
 
-<!-- Source our script that alters object with class "content"--->
-<div id="content">
-    <!-- <svg width = 100% height = 600>
-      <g class="map"></g>
-      <g id = "points" class="map"></g>
-    </svg> -->
-  </div>
 
-  <script src = "./map.js"></script>
-  
+<!-- details container -->
+<div id = 'details' class = 'popup'>
+  <span class = "popuptext" id = "locPopup"> </span>
+</div>
+
 <div class="popup" onclick="myFunction()">Click me to toggle the popup!
   <span class="popuptext" id="myPopup">A Simple Popup!</span>
 </div>

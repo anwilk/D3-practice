@@ -15,6 +15,7 @@ async function load_and_plot() {
   var width = 900,
     height = 600;
   
+  //Create the container itself
   var container = d3.select('#content')
     .append('svg')
     .attr('width', width)
@@ -51,14 +52,59 @@ async function load_and_plot() {
     .attr("name", "test")
     .attr("fill", "darkgrey")
     .attr("stroke", "black")
-  .on('mouseover', institute_mouse)
+    .on('mouseenter', showTooltip)
+    .on('mouseout', hideTooltip)
+  .on('click', showDetails)
+  
+// Tooltip on mouseover section ----------
+// We add a <div> container for the tooltip, which is hidden by default.
+var tooltip = d3.select("#content")
+  .append("div")
+  .attr("class", "tooltip hidden");
 
+//Function to hide tooltip on mouse out
+function hideTooltip() {
+  tooltip.classed('hidden', true);
+}
+  
+  //Create a function to display data in tooltip
+function showTooltip(event, datum) {
+  // Get the ID of the feature.
+  var id = datum.properties;
+  
+  // Get location of mouse
+   // Get the current mouse position (as integer)
+  var mouse_pos = d3.pointer(event, this).map(d => parseInt(d))
+  
+  // Calculate the absolute left and top offsets of the tooltip. If the
+  // mouse is close to the right border of the map, show the tooltip on
+  // the left.
+  var left = Math.min(width - 4 * id.location.length, mouse_pos[0] + 30);
+  var top = mouse_pos[1] + 30;
 
-  //handle click by updating state
-  function institute_mouse(e) {
+  // Use the ID to get the string in 'location'
+  tooltip.classed('hidden', false)
+    .attr("style", "left:" + left + "px; top:" + top + "px")
+    .html(id.location);
+  
+  console.log(id.location)
+  console.log(id.location.length)
+  console.log(mouse_pos)
+}
+
+//Details on click section --------
+  function showDetails(event, datum) {
+    //Get data
+    id = datum.properties
     
-    console.log(e)
-    console.log(e.path)
+    d3.select("#locPopup")
+    d3.select("#locPopup")
+  }
+  //handle click by updating state
+  function institute_mouse(event, datum) {
+    
+    console.log(event)
+    console.log(datum.properties.location)
     
     
     //var dat = data(points.features)(e.path)
@@ -66,38 +112,38 @@ async function load_and_plot() {
   }
   
   
-  //Tooltip creator
-  function showTooltip(f) {
-  // Calculate the absolute left and top offsets of the tooltip. If the
-  // mouse is close to the right border of the map, show the tooltip on
-  // the left.
-  // var left = Math.min(width - 4 * d.name.length, mouse[0] + 5);
-  // var top = mouse[1] + 25;
+//   //Tooltip creator
+//   function showTooltip(f) {
+//   // Calculate the absolute left and top offsets of the tooltip. If the
+//   // mouse is close to the right border of the map, show the tooltip on
+//   // the left.
+//   var left = Math.min(width - 4 * d.name.length, mouse[0] + 5);
+//   var top = mouse[1] + 25;
 
-  // // Show the tooltip (unhide it) and set the name of the data entry.
-  // // Set the position as calculated before.
-  // tooltip.classed('hidden', false)
-  //   .attr("style", "left:" + left + "px; top:" + top + "px")
-  //   .html(d);
-}
+//   // Show the tooltip (unhide it) and set the name of the data entry.
+//   // Set the position as calculated before.
+//   tooltip.classed('hidden', false)
+//     .attr("style", "left:" + left + "px; top:" + top + "px")
+//     .html(d);
+// }
   
   
-  //   // Define the zoom and attach it to the map
-  // var zoom = d3.behavior.zoom()
-  //   .scaleExtent([1, 10])
-  //   .on('zoom', doZoom);
-  //   svg.call(zoom);
+//     // Define the zoom and attach it to the map
+//   var zoom = d3.behavior.zoom()
+//     .scaleExtent([1, 10])
+//     .on('zoom', doZoom);
+//     svg.call(zoom);
   
-  // function doZoom() {
-  // mapFeatures.attr("transform",
-  //   "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
-  // } 
+//   function doZoom() {
+//   mapFeatures.attr("transform",
+//     "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
+//   } 
 
-  // // Functions to deal with later ---------
-  // //Clicker state object with location attribute
-  // let state = {
-	// mouseLocation: null
-  // }
+//   // Functions to deal with later ---------
+//   //Clicker state object with location attribute
+//   let state = {
+// 	mouseLocation: null
+//   }
 
   
 

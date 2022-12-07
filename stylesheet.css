@@ -3,6 +3,16 @@ body {
     margin: 25px;
 }
 
+h1 {
+    /* color: darkolivegreen;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #222; */
+    /* text-shadow: 1px 1px 2px #222; */
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 800;
+    border-bottom: 1px solid darkolivegreen;
+}
+
 g.map {
     stroke: #c6c6c6
 }
@@ -11,9 +21,9 @@ g.point_data path:hover {
     fill: darkolivegreen;
 }
 
-
 .tooltip {
-    font-weight: bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 300;
     padding: 0.5rem;
     border: 1px solid silver;
     color: #222;
@@ -22,8 +32,12 @@ g.point_data path:hover {
     box-shadow: 0px 0px 5px 0px #a6a6a6;
     opacity: 0.9;
     position: absolute;
+    /* text-align: center; */
 }
 
+.hidden{
+    display: none;
+}
 
 .popup {
     position: relative;
