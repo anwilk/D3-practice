@@ -29,7 +29,7 @@ g.water {
 .tooltip {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: 300;
-    padding: 0.5rem;
+    padding: 4px 10px;
     border: 1px solid silver;
     color: #222;
     background: #fff;

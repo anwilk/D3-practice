@@ -10,7 +10,7 @@ async function load_and_plot() {
   const streams = await d3.json("./features_simplified/MS_riv_simplified.geojson")
 
   // Combine projection with our builder function
-  const projection = d3.geoAlbers(); //specify projection to use
+  const projection = d3.geoAlbers().scale([900]); //specify projection to use
   const geoGenerator = d3.geoPath(projection);
   
   //Variables for svg container
@@ -21,12 +21,30 @@ async function load_and_plot() {
   var container = d3
     .select("#map")
     .append("svg") //Make an svg within the HTML <div> with id:map
-    .attr("width", 900)
-    .attr("height", 600);
+    .attr("width", "90vw")
+    .attr("height", "500px");
+
+  //Create visual bounding box for the map container
+  var bounds = container
+    .append("rect")
+    .attr("stroke", "black")
+    .attr("width", "90vw")
+    .attr("height", "500px")
+    .attr("fill", "none")
+    .attr("stroke-width", "2px")
+    .attr("stroke", "#656565")
+  
+  //Zoom functionality on the container
+  let zoom = d3.zoom()
+    .on('zoom', () => { container.attr('transform', d3.event.transform) })
+  
+  container.call(zoom)
 
   var details = d3.select("body")
     .append("div")
     .attr("id", "details")
+  
+    
   //Add containers for the various layers, order matters here =======
   //id for basemap that belongs to map class
   var basemap = container.append("g")
@@ -51,10 +69,6 @@ async function load_and_plot() {
     .append("div") //Append a div within <div> id:map, same level as "container"
     .attr("class", "tooltip hidden");
   
-  //Zoom function
-  function zoom(projection, {scale = projection._scale === undefined ? (projection._scale = projection.scale()) : projection._scale, scaleExtent = [0.8, 8] } = {}) {
-    
-  }
   
   // ====================================================================
   
@@ -95,7 +109,6 @@ async function load_and_plot() {
   //Function to hide tooltip on mouse out
   function hideTooltip() {
     tooltip.classed("hidden", true);
-    console.log("mouse_out")
   }
 
   //Create a function to display data in tooltip
@@ -111,7 +124,7 @@ async function load_and_plot() {
     // mouse is close to the right border of the map, show the tooltip on
     // the left.
     var left = Math.min(width - 4 * id.location.length, mouse_pos[0] + 30);
-    var top = mouse_pos[1] + 30;
+    var top = mouse_pos[1] + 55;
 
     // Use the ID to get the string in 'location'
     tooltip
