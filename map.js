@@ -158,6 +158,7 @@ async function load_and_plot() {
       .append("a")
       .attr("href", function (b) { if (`${b}`.startsWith("ht")) { return `${b}` } }) //access text contents, add href if it starts with "http"
      .attr("title", function(B){return `${B}`}) //access text contents, add href if it starts with "http"
+      .attr("target", "_blank")
       .text(function (t) { return (t) })
       
       
