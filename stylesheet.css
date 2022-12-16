@@ -13,6 +13,12 @@ h1 {
     border-bottom: 3px solid #8b9137;
     padding-bottom: 5px;
 }
+#svg-map{
+    width: 70vw;
+    height: 50vh;
+    display: block;
+    margin: auto;
+}
 
 g.geo-feat {
     stroke: #c6c6c6
@@ -49,6 +55,8 @@ table {
     border: 2px solid #8b9137;
     border-radius: 25px;
     background-color: rgba(238, 236, 236, 0.6);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 td {
