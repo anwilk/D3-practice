@@ -14,12 +14,16 @@ h1 {
     padding-bottom: 5px;
 }
 
-g.map {
+g.geo-feat {
     stroke: #c6c6c6
 }
 
-g.point_data path:hover {
+g.points path:hover {
     fill: #5a84c3;
+}
+
+g.water {
+    stroke: #5a84c3;
 }
 
 .tooltip {
