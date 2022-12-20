@@ -7,47 +7,56 @@ async function load_and_plot() {
   const points = await d3.json("./features_simplified/institute_poi.geojson");
 
   //Pause while we get streams
-  const streams = await d3.json("./features_simplified/MS_riv_simplified.geojson")
+  const streams = await d3.json(
+    "./features_simplified/MS_riv_simplified.geojson"
+  );
 
-  // Combine projection with our builder function
-  const projection = d3.geoAlbers().scale([900]); //specify projection to use
+  //Get scale factor
+  var width = window.innerWidth;
+  var height = window.innerHeight;
+
+  var min_val = Math.min(width, height);
+  var scale = min_val / 1.375;
+
+  //Create projector
+  const projection = d3
+    .geoAlbers()
+    .scale(scale)
+    .translate([width / 3.5, height / 4.25]); //specify projection to use
   const geoGenerator = d3.geoPath(projection);
-  
-  //Variables for svg container
-  var width = 900,
-    height = 600;
+
+  //Create zoom function
+  function handleZoom(e) {
+    d3.selectAll("svg").selectAll("g").attr("transform", e.transform);
+    console.log(zoom);
+  }
+
+  let zoom = d3.zoom().on("zoom", handleZoom);
+
+  //Create divider for map
+  var details = d3.select("body").append("div").attr("id", "map");
 
   //Create the container itself
   var container = d3
     .select("#map")
     .append("svg") //Make an svg within the HTML <div> with id:map
-    .attr("width", "90vw")
-    .attr("height", "500px");
+    .attr("id", "svg-map")
+    .call(zoom); //Allow us to zoom in on the container
 
-  //Create visual bounding box for the map container
+  //Create visual bounding box for the map
   var bounds = container
     .append("rect")
     .attr("stroke", "black")
-    .attr("width", "90vw")
-    .attr("height", "500px")
+    .attr("width", "70vw")
+    .attr("height", "50vh")
     .attr("fill", "none")
     .attr("stroke-width", "2px")
-    .attr("stroke", "#656565")
-  
-  //Zoom functionality on the container
-  let zoom = d3.zoom()
-    .on('zoom', () => { container.attr('transform', d3.event.transform) })
-  
-  container.call(zoom)
+    .attr("stroke", "#656565");
 
-  var details = d3.select("body")
-    .append("div")
-    .attr("id", "details")
-  
-    
   //Add containers for the various layers, order matters here =======
   //id for basemap that belongs to map class
-  var basemap = container.append("g")
+  var basemap = container
+    .append("g")
     .attr("class", "geo-feat")
     .attr("id", "base");
 
@@ -55,24 +64,27 @@ async function load_and_plot() {
   var streams_contain = container
     .append("g")
     .attr("class", "water")
-    .attr("id", "streams")
-  
+    .attr("id", "streams");
+
   //ID for points that belongs to map class
   var point_overlay = container
     .append("g")
     .attr("id", "points")
     .attr("class", "points");
 
-    // We add a <div> container for the tooltip, which is hidden by default.
+  // We add a <div> container for the tooltip, which is hidden by default.
   var tooltip = d3
     .select("#map")
     .append("div") //Append a div within <div> id:map, same level as "container"
     .attr("class", "tooltip hidden");
-  
-  
+
+  //Create details section
+  var details = d3.select("#map").append("div").attr("id", "details");
+
   // ====================================================================
-  
-  // Join the FeatureCollection's features array to path elements
+
+  // Join the FeatureCollection's features array to path elements =======
+
   d3.select("#base") //Identify what html element to plot into
     .selectAll("path") //select (or create) path element for svg block
     .data(states.features) //use the features of the states
@@ -80,15 +92,15 @@ async function load_and_plot() {
     .attr("d", geoGenerator) //Use geo generator to assign value to "d" attribute
     .attr("fill", "none");
 
-    //Fill streams container with data
+  //Fill streams container with data
   d3.select("#streams")
     .selectAll("path")
     .data(streams.features)
     .join("path")
     .attr("d", geoGenerator)
     .attr("fill", "none")
-    .attr("class", "water")
-  
+    .attr("class", "water");
+
   //Separate element used so that mouseover interaction is only applied to points
   d3.select("#points")
     .selectAll("path")
@@ -101,10 +113,10 @@ async function load_and_plot() {
     .on("mouseenter", showTooltip)
     .on("mouseout", hideTooltip)
     .on("click", showDetails);
-  
 
-  
-  // Tooltip on mouseover section ----------
+  //========================================
+
+  // Tooltip on mouseover section ==========
 
   //Function to hide tooltip on mouse out
   function hideTooltip() {
@@ -153,34 +165,41 @@ async function load_and_plot() {
 
     const obj = datum.properties;
     const entries = Object.entries(obj);
-    const values = Object.values(obj)
+    const values = Object.values(obj);
 
     //Create row for each "data"
     var rows = tbody
       .selectAll("tr") //select rows
       .data(entries) //Bind Data to DOM
-      .enter() //Make selection of missing elements 
+      .enter() //Make selection of missing elements
       .append("tr"); //Append a row to the selection (so that it creates a row)
 
     //Create table cells
     var td = rows
       .selectAll("tr")
-      .data(function(d){return d})
+      .data(function (d) {
+        return d;
+      })
       .enter()
       .append("td")
       .append("a")
-      .attr("href", function (b) { if (`${b}`.startsWith("ht")) { return `${b}` } }) //access text contents, add href if it starts with "http"
-     .attr("title", function(B){return `${B}`}) //access text contents, add href if it starts with "http"
+      .attr("href", function (b) {
+        if (`${b}`.startsWith("ht")) {
+          return `${b}`;
+        }
+      }) //access text contents, add href if it starts with "http"
+      .attr("title", function (B) {
+        return `${B}`;
+      }) //access text contents, add href if it starts with "http"
       .attr("target", "_blank")
-      .text(function (t) { return (t) })
-      
-      
-    
-    console.log("Values:")
-    console.log(Object.values(obj));
-    console.log("Entries:")
-    console.log(entries)
+      .text(function (t) {
+        return t;
+      });
 
+    console.log("Values:");
+    console.log(Object.values(obj));
+    console.log("Entries:");
+    console.log(entries);
   }
 }
 
