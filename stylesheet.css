@@ -1,64 +1,72 @@
 /* Popup container - can be anything you want */
 body {
-    margin: 25px;
+  margin: 25px;
 }
 
 h1 {
-    /* color: darkolivegreen;
+  /* color: darkolivegreen;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #222; */
-    /* text-shadow: 1px 1px 2px #222; */
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-weight: 800;
-    border-bottom: 3px solid #8b9137;
-    padding-bottom: 5px;
+  /* text-shadow: 1px 1px 2px #222; */
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-weight: 800;
+  border-bottom: 3px solid #8b9137;
+  padding-bottom: 5px;
 }
-#svg-map{
-    width: 70vw;
-    height: 50vh;
-    display: block;
-    margin: auto;
-}
-
-g.geo-feat {
-    stroke: #c6c6c6
+#svg-map {
+  width: 70vw;
+  height: 50vh;
+  display: block;
+  margin: auto;
 }
 
-g.points path:hover {
-    fill: #5a84c3;
+#states {
+  stroke: #c6c6c6;
 }
 
-g.water {
-    stroke: #5a84c3;
+#points {
+  fill: #a6a6a6;
+  stroke: #222;
+}
+
+#points path:hover {
+  fill: #5a84c3;
+}
+
+#streams {
+  stroke: #5a84c3;
 }
 
 .tooltip {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-weight: 300;
-    padding: 4px 10px;
-    border: 1px solid silver;
-    color: #222;
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px 0px #a6a6a6;
-    opacity: 0.9;
-    position: absolute;
-    /* text-align: center; */
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-weight: 300;
+  padding: 4px 10px;
+  border: 1px solid silver;
+  color: #222;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 0px #a6a6a6;
+  opacity: 0.9;
+  position: absolute;
+  /* text-align: center; */
 }
 
-.hidden{
-    display: none;
+.hidden {
+  display: none;
 }
 
 table {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    border: 2px solid #8b9137;
-    border-radius: 25px;
-    background-color: rgba(238, 236, 236, 0.6);
-    margin-left: auto;
-    margin-right: auto;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  border: 2px solid #8b9137;
+  border-radius: 25px;
+  background-color: rgba(238, 236, 236, 0.6);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 td {
-    padding: 10px;
+  padding: 10px;
 }
