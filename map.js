@@ -27,7 +27,8 @@ async function load_and_plot() {
 
   //Create zoom function
   function handleZoom(e) {
-    d3.selectAll("svg").selectAll("g").attr("transform", e.transform);
+    d3.select(this).selectAll("g").attr("transform", e.transform);
+    d3.select();
     console.log(zoom);
   }
 
@@ -58,21 +59,21 @@ async function load_and_plot() {
   var basemap = container
     .append("g")
     .attr("class", "geo-feat")
-    .attr("id", "base");
+    .attr("id", "states");
 
   //Create container for streams
   var streams_contain = container
     .append("g")
-    .attr("class", "water")
+    .attr("class", "geo-feat")
     .attr("id", "streams");
 
   //ID for points that belongs to map class
   var point_overlay = container
     .append("g")
-    .attr("id", "points")
-    .attr("class", "points");
+    .attr("class", "geo_feat")
+    .attr("id", "points");
 
-  // We add a <div> container for the tooltip, which is hidden by default.
+  // We add a <g> container for the tooltip, which is hidden by default.
   var tooltip = d3
     .select("#map")
     .append("div") //Append a div within <div> id:map, same level as "container"
@@ -84,8 +85,7 @@ async function load_and_plot() {
   // ====================================================================
 
   // Join the FeatureCollection's features array to path elements =======
-
-  d3.select("#base") //Identify what html element to plot into
+  d3.select("#states") //Identify what html element to plot into
     .selectAll("path") //select (or create) path element for svg block
     .data(states.features) //use the features of the states
     .join("path") //join states data to the path
@@ -98,8 +98,7 @@ async function load_and_plot() {
     .data(streams.features)
     .join("path")
     .attr("d", geoGenerator)
-    .attr("fill", "none")
-    .attr("class", "water");
+    .attr("fill", "none");
 
   //Separate element used so that mouseover interaction is only applied to points
   d3.select("#points")
@@ -107,9 +106,6 @@ async function load_and_plot() {
     .data(points.features)
     .join("path")
     .attr("d", geoGenerator)
-    .attr("name", "test")
-    .attr("fill", "darkgrey")
-    .attr("stroke", "black")
     .on("mouseenter", showTooltip)
     .on("mouseout", hideTooltip)
     .on("click", showDetails);
@@ -130,20 +126,22 @@ async function load_and_plot() {
 
     // Get location of mouse
     // Get the current mouse position (as integer)
-    var mouse_pos = d3.pointer(event, this).map((d) => parseInt(d));
+    var mouse_pos = d3.pointer(event, container).map((d) => parseInt(d));
 
     // Calculate the absolute left and top offsets of the tooltip. If the
     // mouse is close to the right border of the map, show the tooltip on
     // the left.
-    var left = Math.min(width - 4 * id.location.length, mouse_pos[0] + 30);
-    var top = mouse_pos[1] + 55;
+    var left = Math.min(width + 4 * id.location.length, mouse_pos[0] + 20);
+    var top = mouse_pos[1] - 30;
 
     // Use the ID to get the string in 'location'
     tooltip
       .classed("hidden", false)
       .attr("style", "left:" + left + "px; top:" + top + "px")
-      .text(id.location);
+      .text(id.location)
+      .attr("id", "tooltip");
 
+    console.log(id);
     console.log(id.location);
     console.log(id.location.length);
     console.log(mouse_pos);
