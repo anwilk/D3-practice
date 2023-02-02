@@ -11,7 +11,9 @@ async function load_and_plot() {
     "./features_simplified/MS_riv_simplified.geojson"
   );
 
-  //Get scale factor
+  const ngrrec = await d3.json("./features_simplified/ngrrec.geojson");
+
+  //Get vars for scaling
   var width = window.innerWidth;
   var height = window.innerHeight;
 
@@ -23,15 +25,12 @@ async function load_and_plot() {
     .geoAlbers()
     .scale(scale)
     .translate([width / 3.5, height / 4.25]); //specify projection to use
-  const geoGenerator = d3.geoPath(projection);
+  const geoGenerator = d3.geoPath(projection).pointRadius(4);
 
   //Create zoom function
   function handleZoom(e) {
     d3.select(this).selectAll("g").attr("transform", e.transform);
-    d3.select();
-    console.log(zoom);
   }
-
   let zoom = d3.zoom().on("zoom", handleZoom);
 
   //Create divider for map
@@ -56,7 +55,7 @@ async function load_and_plot() {
 
   //Add containers for the various layers, order matters here =======
   //id for basemap that belongs to map class
-  var basemap = container
+  var states_contain = container
     .append("g")
     .attr("class", "geo-feat")
     .attr("id", "states");
@@ -68,10 +67,16 @@ async function load_and_plot() {
     .attr("id", "streams");
 
   //ID for points that belongs to map class
-  var point_overlay = container
+  var points_contain = container
     .append("g")
-    .attr("class", "geo_feat")
+    .attr("class", "geo-feat")
     .attr("id", "points");
+
+  //ID for points that belongs to map class
+  var ngrrec_contain = container
+    .append("g")
+    .attr("class", "geo-feat")
+    .attr("id", "ngrrec");
 
   // We add a <g> container for the tooltip, which is hidden by default.
   var tooltip = d3
@@ -85,7 +90,7 @@ async function load_and_plot() {
   // ====================================================================
 
   // Join the FeatureCollection's features array to path elements =======
-  d3.select("#states") //Identify what html element to plot into
+  states_contain //Identify what html element to plot into
     .selectAll("path") //select (or create) path element for svg block
     .data(states.features) //use the features of the states
     .join("path") //join states data to the path
@@ -93,7 +98,7 @@ async function load_and_plot() {
     .attr("fill", "none");
 
   //Fill streams container with data
-  d3.select("#streams")
+  streams_contain
     .selectAll("path")
     .data(streams.features)
     .join("path")
@@ -101,11 +106,23 @@ async function load_and_plot() {
     .attr("fill", "none");
 
   //Separate element used so that mouseover interaction is only applied to points
-  d3.select("#points")
+  points_contain
     .selectAll("path")
     .data(points.features)
     .join("path")
     .attr("d", geoGenerator)
+    .on("mouseenter", showTooltip)
+    .on("mouseout", hideTooltip)
+    .on("click", showDetails);
+
+  //Duplicate section for Ngrrec
+  ngrrec_contain
+    .selectAll("path")
+    .data(ngrrec.features)
+    .join("path")
+    .attr("d", geoGenerator.pointRadius(4.5))
+    .attr("fill", "#D4AF37")
+    .attr("stroke", "#000000")
     .on("mouseenter", showTooltip)
     .on("mouseout", hideTooltip)
     .on("click", showDetails);
@@ -140,14 +157,7 @@ async function load_and_plot() {
       .attr("style", "left:" + left + "px; top:" + top + "px")
       .text(id.location)
       .attr("id", "tooltip");
-
-    console.log(id);
-    console.log(id.location);
-    console.log(id.location.length);
-    console.log(mouse_pos);
   }
-
-  //Function to conditionally attach href attr to <a> tags based on contents of <a>
 
   //Details on click section --------
   async function showDetails(event, datum) {
