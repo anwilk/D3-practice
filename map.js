@@ -25,7 +25,7 @@ async function load_and_plot() {
     .geoAlbers()
     .scale(scale)
     .translate([width / 3.5, height / 4.25]); //specify projection to use
-  const geoGenerator = d3.geoPath(projection).pointRadius(4);
+  const geoGenerator = d3.geoPath(projection).pointRadius(3);
 
   //Create zoom function
   function handleZoom(e) {
@@ -120,7 +120,7 @@ async function load_and_plot() {
     .selectAll("path")
     .data(ngrrec.features)
     .join("path")
-    .attr("d", geoGenerator.pointRadius(4.5))
+    .attr("d", geoGenerator.pointRadius(3.5))
     .attr("fill", "#D4AF37")
     .attr("stroke", "#000000")
     .on("mouseenter", showTooltip)
