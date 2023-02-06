@@ -41,13 +41,12 @@ h1 {
 #samples {
   fill: #8b9137;
   stroke: #000000;
-  stroke-width: .5;
+  stroke-width: 0.5;
 }
 
 #ngrrec {
-  fill: #EE4B2B;
+  fill: #ee4b2b;
   stroke: #000000;
-  sh
 }
 
 .tooltip {
