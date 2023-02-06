@@ -1,37 +1,39 @@
 //Create an asynchronous function which allows us to use keword 'await'
+//Get vars for scaling
+var width = window.innerWidth;
+var height = window.innerHeight;
+var min_val = Math.min(width, height);
+var scale = min_val / 1.375;
+
+//Create projector
+const projection = d3
+  .geoAlbers()
+  .scale(scale)
+  .translate([width / 3.5, height / 4.25]); //specify projection to use
+const geoGenerator = d3.geoPath(projection).pointRadius(3);
+
+//Create zoom function
+function handleZoom(e) {
+  d3.select(this).selectAll("g").attr("transform", e.transform);
+}
+let zoom = d3.zoom().on("zoom", handleZoom);
+
+//Loading and Plotting
 async function load_and_plot() {
   //Pause until we read state json
   const states = await d3.json("./features_simplified/states_reduced.json");
 
   //Pause until we get institute geojson
-  const points = await d3.json("./features_simplified/institute_poi.geojson");
+  const institute = await d3.json(
+    "./features_simplified/institute_poi.geojson"
+  );
+  const samples = await d3.json("./features_simplified/mpweb_dummy.geojson");
+  const ngrrec = await d3.json("./features_simplified/ngrrec.geojson");
 
-  //Pause while we get streams
+  //Pause whi/le we get streams
   const streams = await d3.json(
     "./features_simplified/MS_riv_simplified.geojson"
   );
-
-  const ngrrec = await d3.json("./features_simplified/ngrrec.geojson");
-
-  //Get vars for scaling
-  var width = window.innerWidth;
-  var height = window.innerHeight;
-
-  var min_val = Math.min(width, height);
-  var scale = min_val / 1.375;
-
-  //Create projector
-  const projection = d3
-    .geoAlbers()
-    .scale(scale)
-    .translate([width / 3.5, height / 4.25]); //specify projection to use
-  const geoGenerator = d3.geoPath(projection).pointRadius(3);
-
-  //Create zoom function
-  function handleZoom(e) {
-    d3.select(this).selectAll("g").attr("transform", e.transform);
-  }
-  let zoom = d3.zoom().on("zoom", handleZoom);
 
   //Create divider for map
   var details = d3.select("body").append("div").attr("id", "map");
@@ -66,17 +68,22 @@ async function load_and_plot() {
     .attr("class", "geo-feat")
     .attr("id", "streams");
 
-  //ID for points that belongs to map class
-  var points_contain = container
+  //ID for institute that belongs to map class
+  var institute_contain = container
     .append("g")
     .attr("class", "geo-feat")
-    .attr("id", "points");
+    .attr("id", "institute");
 
-  //ID for points that belongs to map class
+  //ID for institute that belongs to map class
   var ngrrec_contain = container
     .append("g")
     .attr("class", "geo-feat")
     .attr("id", "ngrrec");
+
+  var samples_contain = container
+    .append("g")
+    .attr("class", "geo-feat")
+    .attr("id", "samples");
 
   // We add a <g> container for the tooltip, which is hidden by default.
   var tooltip = d3
@@ -105,10 +112,10 @@ async function load_and_plot() {
     .attr("d", geoGenerator)
     .attr("fill", "none");
 
-  //Separate element used so that mouseover interaction is only applied to points
-  points_contain
+  //Separate element used so that mouseover interaction is only applied to institute
+  institute_contain
     .selectAll("path")
-    .data(points.features)
+    .data(institute.features)
     .join("path")
     .attr("d", geoGenerator)
     .on("mouseenter", showTooltip)
@@ -121,12 +128,16 @@ async function load_and_plot() {
     .data(ngrrec.features)
     .join("path")
     .attr("d", geoGenerator.pointRadius(3.5))
-    .attr("fill", "#D4AF37")
-    .attr("stroke", "#000000")
     .on("mouseenter", showTooltip)
     .on("mouseout", hideTooltip)
     .on("click", showDetails);
 
+  //Samples
+  samples_contain
+    .selectAll("path")
+    .data(samples.features)
+    .join("path")
+    .attr("d", geoGenerator.pointRadius(1.5));
   //========================================
 
   // Tooltip on mouseover section ==========
@@ -209,6 +220,8 @@ async function load_and_plot() {
     console.log("Entries:");
     console.log(entries);
   }
+
+  console.log(samples);
 }
 
 load_and_plot();
