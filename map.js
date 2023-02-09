@@ -1,4 +1,3 @@
-//Create an asynchronous function which allows us to use keword 'await'
 //Get vars for scaling
 var width = window.innerWidth;
 var height = window.innerHeight;
@@ -12,32 +11,67 @@ const projection = d3
   .translate([width / 3.5, height / 4.25]); //specify projection to use
 const geoGenerator = d3.geoPath(projection).pointRadius(3);
 
-//Create zoom function
+//Create zoom function ----------
 function handleZoom(e) {
   d3.select(this).selectAll("g").attr("transform", e.transform);
 }
-let zoom = d3.zoom().on("zoom", handleZoom);
+let zoom = d3.zoom().on("zoom", handleZoom).scaleExtent([1, 10]); //Min and Max zoom bounds
 
-//Loading and Plotting
-async function load_and_plot() {
-  //Pause until we read state json
-  const states = await d3.json("./features_simplified/states_reduced.json");
+//Details on click section --------
+function showDetails(event, datum) {
+  //Remove existing table first
+  d3.select("table").remove();
 
-  //Pause until we get institute geojson
-  const institute = await d3.json(
-    "./features_simplified/institute_poi.geojson"
-  );
-  const samples = await d3.json("./features_simplified/mpweb_dummy.geojson");
-  const ngrrec = await d3.json("./features_simplified/ngrrec.geojson");
+  //Get data
+  var table = d3.select("#details-table").append("table");
 
-  //Pause whi/le we get streams
-  const streams = await d3.json(
-    "./features_simplified/MS_riv_simplified.geojson"
-  );
+  //Create table in the detials <div>
+  thead = table.append("thead").append("tr");
+  tbody = table.append("tbody");
 
+  const obj = datum.properties;
+  const entries = Object.entries(obj);
+  const values = Object.values(obj);
+
+  //Create row for each "data"
+  var rows = tbody
+    .selectAll("tr") //select rows
+    .data(entries) //Bind Data to DOM
+    .enter() //Make selection of missing elements
+    .append("tr"); //Append a row to the selection (so that it creates a row)
+
+  //Create table cells
+  var td = rows
+    .selectAll("tr")
+    .data(function (d) {
+      return d;
+    })
+    .enter()
+    .append("td")
+    .append("a")
+    .attr("href", function (b) {
+      if (`${b}`.startsWith("ht")) {
+        return `${b}`;
+      }
+    }) //access text contents, add href if it starts with "http"
+    .attr("title", function (B) {
+      return `${B}`;
+    }) //access text contents, add href if it starts with "http"
+    .attr("target", "_blank")
+    .text(function (t) {
+      return t;
+    });
+
+  console.log("Values:");
+  console.log(Object.values(obj));
+  console.log("Entries:");
+  console.log(entries);
+}
+
+// Set up DOM with JS function
+function dom_setup() {
   //Create divider for map
-  var details = d3.select("body").append("div").attr("id", "map");
-
+  var map_space = d3.select("body").append("div").attr("id", "map");
   //Create the container itself
   var container = d3
     .select("#map")
@@ -55,8 +89,7 @@ async function load_and_plot() {
     .attr("stroke-width", "2px")
     .attr("stroke", "#656565");
 
-  //Add containers for the various layers, order matters here =======
-  //id for basemap that belongs to map class
+  //States Container
   var states_contain = container
     .append("g")
     .attr("class", "geo-feat")
@@ -86,18 +119,89 @@ async function load_and_plot() {
     .attr("id", "samples");
 
   // We add a <g> container for the tooltip, which is hidden by default.
-  var tooltip = d3
-    .select("#map")
+  var tooltip = map_space
     .append("div") //Append a div within <div> id:map, same level as "container"
+    .attr("id", "tooltip")
     .attr("class", "tooltip hidden");
 
-  //Create details section
-  var details = d3.select("#map").append("div").attr("id", "details");
+  //Create Checkbox system for displaying or hiding layers
+  //requires name on checkbox input to match a layer ID
+  function layer_display() {
+    cb_status = this.checked;
+    lyrname = this.name;
+    lyr_tochange = d3.select(`#${lyrname}`);
 
+    if (cb_status === true) {
+      lyr_tochange.classed("hidden", false);
+    } else {
+      lyr_tochange.classed("hidden", true);
+    }
+  }
+  var baselyr_menu = map_space.append("li").text("Base Layers");
+  var samples_menu = map_space.append("li").text("Data Exploration");
+
+  var bl_river = baselyr_menu.append("ul").text("Rivers");
+  var bl_states = baselyr_menu.append("ul").text("States");
+  var lyr_samples = samples_menu.append("ul").text("Samples");
+
+  //Rivers
+  bl_river
+    .append("input")
+    .attr("type", "checkbox")
+    .attr("class", "layer-cb")
+    .attr("id", "streams-cb")
+    .attr("name", "streams")
+    .property("checked", true)
+    .on("change", layer_display);
+
+  //States
+  bl_states
+    .append("input")
+    .attr("type", "checkbox")
+    .attr("class", "layer-cb")
+    .attr("id", "states-cb")
+    .attr("name", "states")
+    .property("checked", true)
+    .on("change", layer_display);
+
+  //Sample locations
+  lyr_samples
+    .append("input")
+    .attr("type", "checkbox")
+    .attr("class", "layerCB")
+    .attr("id", "samples_cb")
+    .attr("name", "samples")
+    .property("checked", true)
+    .on("change", layer_display);
+
+  //Create Divider for details section to populate
+  map_space.append("div").attr("id", "details-table");
+
+  console.log(d3.select("#cbox-samples1"));
+}
+
+//Listener function for turning data on and off
+
+//Loading and Plotting
+async function load_and_plot() {
+  //Pause until we read state json
+  const states = await d3.json("./features_simplified/states_reduced.json");
+
+  //Pause until we get institute geojson
+  const institute = await d3.json(
+    "./features_simplified/institute_poi.geojson"
+  );
+  const samples = await d3.json("./features_simplified/mpweb_dummy.geojson");
+  const ngrrec = await d3.json("./features_simplified/ngrrec.geojson");
+
+  //Pause while we get streams
+  const streams = await d3.json(
+    "./features_simplified/MS_riv_simplified.geojson"
+  );
   // ====================================================================
 
   // Join the FeatureCollection's features array to path elements =======
-  states_contain //Identify what html element to plot into
+  d3.select("#states") //Identify what html element to plot into
     .selectAll("path") //select (or create) path element for svg block
     .data(states.features) //use the features of the states
     .join("path") //join states data to the path
@@ -105,7 +209,7 @@ async function load_and_plot() {
     .attr("fill", "none");
 
   //Fill streams container with data
-  streams_contain
+  d3.select("#streams")
     .selectAll("path")
     .data(streams.features)
     .join("path")
@@ -113,7 +217,7 @@ async function load_and_plot() {
     .attr("fill", "none");
 
   //Separate element used so that mouseover interaction is only applied to institute
-  institute_contain
+  d3.select("#institute")
     .selectAll("path")
     .data(institute.features)
     .join("path")
@@ -123,7 +227,7 @@ async function load_and_plot() {
     .on("click", showDetails);
 
   //Duplicate section for Ngrrec
-  ngrrec_contain
+  d3.select("#ngrrec")
     .selectAll("path")
     .data(ngrrec.features)
     .join("path")
@@ -133,14 +237,17 @@ async function load_and_plot() {
     .on("click", showDetails);
 
   //Samples
-  samples_contain
+  d3.select("#samples")
     .selectAll("path")
     .data(samples.features)
     .join("path")
-    .attr("d", geoGenerator.pointRadius(1.5));
-  //========================================
+    .attr("d", geoGenerator.pointRadius(1.5))
+    .on("click", showDetails);
 
   // Tooltip on mouseover section ==========
+  //Define tooltip object and context container
+  var tooltip = d3.select("#tooltip");
+  var container = d3.select("#map");
 
   //Function to hide tooltip on mouse out
   function hideTooltip() {
@@ -169,59 +276,7 @@ async function load_and_plot() {
       .text(id.location)
       .attr("id", "tooltip");
   }
-
-  //Details on click section --------
-  async function showDetails(event, datum) {
-    //Remove existing table first
-    d3.select("table").remove();
-
-    //Get data
-    var table = d3.select("#details").append("table");
-
-    //Create table in the detials <div>
-    thead = table.append("thead").append("tr");
-    tbody = table.append("tbody");
-
-    const obj = datum.properties;
-    const entries = Object.entries(obj);
-    const values = Object.values(obj);
-
-    //Create row for each "data"
-    var rows = tbody
-      .selectAll("tr") //select rows
-      .data(entries) //Bind Data to DOM
-      .enter() //Make selection of missing elements
-      .append("tr"); //Append a row to the selection (so that it creates a row)
-
-    //Create table cells
-    var td = rows
-      .selectAll("tr")
-      .data(function (d) {
-        return d;
-      })
-      .enter()
-      .append("td")
-      .append("a")
-      .attr("href", function (b) {
-        if (`${b}`.startsWith("ht")) {
-          return `${b}`;
-        }
-      }) //access text contents, add href if it starts with "http"
-      .attr("title", function (B) {
-        return `${B}`;
-      }) //access text contents, add href if it starts with "http"
-      .attr("target", "_blank")
-      .text(function (t) {
-        return t;
-      });
-
-    console.log("Values:");
-    console.log(Object.values(obj));
-    console.log("Entries:");
-    console.log(entries);
-  }
-
-  console.log(samples);
 }
 
+dom_setup();
 load_and_plot();
