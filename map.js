@@ -68,6 +68,19 @@ function showDetails(event, datum) {
   console.log(entries);
 }
 
+//Function to show layers on checkbox
+function layer_display() {
+  cb_status = this.checked;
+  lyrname = this.name;
+  lyr_tochange = d3.select(`#${lyrname}`);
+
+  if (cb_status === true) {
+    lyr_tochange.classed("hidden", false);
+  } else {
+    lyr_tochange.classed("hidden", true);
+  }
+}
+
 // Set up DOM with JS function
 function dom_setup() {
   //Create divider for map
@@ -126,17 +139,7 @@ function dom_setup() {
 
   //Create Checkbox system for displaying or hiding layers
   //requires name on checkbox input to match a layer ID
-  function layer_display() {
-    cb_status = this.checked;
-    lyrname = this.name;
-    lyr_tochange = d3.select(`#${lyrname}`);
 
-    if (cb_status === true) {
-      lyr_tochange.classed("hidden", false);
-    } else {
-      lyr_tochange.classed("hidden", true);
-    }
-  }
   var baselyr_menu = map_space.append("li").text("Base Layers");
   var samples_menu = map_space.append("li").text("Data Exploration");
 
@@ -164,6 +167,8 @@ function dom_setup() {
     .property("checked", true)
     .on("change", layer_display);
 
+  //Institutions
+
   //Sample locations
   lyr_samples
     .append("input")
@@ -179,8 +184,6 @@ function dom_setup() {
 
   console.log(d3.select("#cbox-samples1"));
 }
-
-//Listener function for turning data on and off
 
 //Loading and Plotting
 async function load_and_plot() {
