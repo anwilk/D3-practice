@@ -69,16 +69,18 @@ function showDetails(event, datum) {
 }
 
 //Function to show layers on checkbox
-function layer_display() {
-  cb_status = this.checked;
-  lyrname = this.name;
-  lyr_tochange = d3.select(`#${lyrname}`);
+function getToggleVisibilityHandler(d3LayerSelector) {
+  return function layer_display() {
+    cb_status = this.checked;
+    lyrname = this.name;
+    lyr_tochange = d3.select(d3LayerSelector);
 
-  if (cb_status === true) {
-    lyr_tochange.classed("hidden", false);
-  } else {
-    lyr_tochange.classed("hidden", true);
-  }
+    if (cb_status === true) {
+      lyr_tochange.classed("hidden", false);
+    } else {
+      lyr_tochange.classed("hidden", true);
+    }
+  };
 }
 
 // Set up DOM with JS function
@@ -155,7 +157,7 @@ function dom_setup() {
     .attr("id", "streams-cb")
     .attr("name", "streams")
     .property("checked", true)
-    .on("change", layer_display);
+    .on("change", getToggleVisibilityHandler("#streams"));
 
   //States
   bl_states
@@ -165,7 +167,7 @@ function dom_setup() {
     .attr("id", "states-cb")
     .attr("name", "states")
     .property("checked", true)
-    .on("change", layer_display);
+    .on("change", getToggleVisibilityHandler("#states"));
 
   //Institutions
 
@@ -177,7 +179,7 @@ function dom_setup() {
     .attr("id", "samples_cb")
     .attr("name", "samples")
     .property("checked", true)
-    .on("change", layer_display);
+    .on("change", getToggleVisibilityHandler("#samples"));
 
   //Create Divider for details section to populate
   map_space.append("div").attr("id", "details-table");
