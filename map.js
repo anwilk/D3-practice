@@ -190,7 +190,7 @@ function dom_setup() {
 //Loading and Plotting
 async function load_and_plot() {
   //Pause until we read state json
-  const states = await d3.json("./features_simplified/states_reduced.json");
+  const states = await d3.json("./features_simplified/states_geo.geojson");
 
   //Pause until we get institute geojson
   const institute = await d3.json(
