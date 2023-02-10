@@ -71,11 +71,9 @@ function showDetails(event, datum) {
 //Function to show layers on checkbox
 function getToggleVisibilityHandler(d3LayerSelector) {
   return function layer_display() {
-    cb_status = this.checked;
-    lyrname = this.name;
     lyr_tochange = d3.select(d3LayerSelector);
 
-    if (cb_status === true) {
+    if (this.checked === true) {
       lyr_tochange.classed("hidden", false);
     } else {
       lyr_tochange.classed("hidden", true);
