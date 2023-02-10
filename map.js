@@ -102,7 +102,7 @@ function dom_setup() {
     .attr("stroke-width", "2px")
     .attr("stroke", "#656565");
 
-  //States Container
+  //States Container,
   var states_contain = container
     .append("g")
     .attr("class", "geo-feat")
@@ -151,8 +151,8 @@ function dom_setup() {
   bl_river
     .append("input")
     .attr("type", "checkbox")
-    .attr("class", "layer-cb")
-    .attr("id", "streams-cb")
+    .attr("class", "layercb")
+    .attr("id", "streams_cb")
     .attr("name", "streams")
     .property("checked", true)
     .on("change", getToggleVisibilityHandler("#streams"));
@@ -161,8 +161,8 @@ function dom_setup() {
   bl_states
     .append("input")
     .attr("type", "checkbox")
-    .attr("class", "layer-cb")
-    .attr("id", "states-cb")
+    .attr("class", "layercb")
+    .attr("id", "states_cb")
     .attr("name", "states")
     .property("checked", true)
     .on("change", getToggleVisibilityHandler("#states"));
@@ -173,7 +173,7 @@ function dom_setup() {
   lyr_samples
     .append("input")
     .attr("type", "checkbox")
-    .attr("class", "layerCB")
+    .attr("class", "layercb")
     .attr("id", "samples_cb")
     .attr("name", "samples")
     .property("checked", true)

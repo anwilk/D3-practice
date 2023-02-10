@@ -14,6 +14,7 @@ h1 {
   border-bottom: 3px solid #8b9137;
   padding-bottom: 5px;
 }
+
 #svg-map {
   width: 70vw;
   height: 50vh;
@@ -23,6 +24,8 @@ h1 {
 
 #states {
   stroke: #c6c6c6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 #institute {
@@ -36,6 +39,8 @@ h1 {
 
 #streams {
   stroke: #5a84c3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 #samples {
@@ -62,6 +67,15 @@ h1 {
   opacity: 0.9;
   position: absolute;
   /* text-align: center; */
+}
+
+li {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+input[type="checkbox"] {
+  background-color: #8b9137;
 }
 
 .hidden {
