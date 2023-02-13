@@ -112,7 +112,7 @@ function dom_setup() {
   svgcontain.append("g").attr("class", "geofeat").attr("id", "states");
 
   //Wshed container
-  svgcontain.append("g").attr("class", "geofeat").attr("id", "wshed");
+  svgcontain.append("g").attr("class", "geofeat").attr("id", "wsheds");
   //Create container for streams
   svgcontain.append("g").attr("class", "geofeat").attr("id", "streams");
 
@@ -197,13 +197,21 @@ async function load_and_plot() {
   const watersheds = await d3.json(
     "./features_simplified/huc2_simplified.json"
   );
-
+  console.log(watersheds);
   // ====================================================================
 
   // Join the FeatureCollection's features array to path elements =======
   d3.select("#states") //Identify what html element to plot into
     .selectAll("path") //select (or create) path element for svg block
     .data(states.features) //use the features of the states
+    .join("path") //join states data to the path
+    .attr("d", geoGenerator) //Use geo generator to assign value to "d" attribute
+    .attr("fill", "none");
+
+  //Watersheds
+  d3.select("#wsheds") //Identify what html element to plot into
+    .selectAll("path") //select (or create) path element for svg block
+    .data(watersheds.features) //use the features of the states
     .join("path") //join states data to the path
     .attr("d", geoGenerator) //Use geo generator to assign value to "d" attribute
     .attr("fill", "none");
