@@ -2,7 +2,7 @@
 var width = window.innerWidth;
 var height = window.innerHeight;
 var min_val = Math.min(width, height);
-var scale = min_val / 1.375;
+var scale = min_val / 1;
 
 //Create projector
 const projection = d3
