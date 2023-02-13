@@ -9,11 +9,12 @@ const projection = d3
   .geoAlbers()
   .scale(scale)
   .translate([width / 3.5, height / 4.25]); //specify projection to use
-const geoGenerator = d3.geoPath(projection).pointRadius(3);
+const geoGenerator = d3.geoPath().projection(projection);
 
 //Create zoom function ----------
 function handleZoom(e) {
   d3.select(this).selectAll("g").attr("transform", e.transform);
+  d3.select(this).selectAll("canvas").attr("transform", e.transform);
 }
 let zoom = d3.zoom().on("zoom", handleZoom).scaleExtent([1, 10]); //Min and Max zoom bounds
 
@@ -84,16 +85,21 @@ function getToggleVisibilityHandler(d3LayerSelector) {
 // Set up DOM with JS function
 function dom_setup() {
   //Create divider for map
-  var map_space = d3.select("body").append("div").attr("id", "map");
+  var map_space = d3
+    .select("#visualization_area")
+    .append("div")
+    .attr("id", "map");
   //Create the container itself
-  var container = d3
+  var contain = d3.select("#map");
+
+  var svgcontain = d3
     .select("#map")
     .append("svg") //Make an svg within the HTML <div> with id:map
     .attr("id", "svg-map")
-    .call(zoom); //Allow us to zoom in on the container
+    .call(zoom);
 
   //Create visual bounding box for the map
-  var bounds = container
+  var bounds = svgcontain
     .append("rect")
     .attr("stroke", "black")
     .attr("width", "70vw")
@@ -102,40 +108,25 @@ function dom_setup() {
     .attr("stroke-width", "2px")
     .attr("stroke", "#656565");
 
-  //States Container,
-  var states_contain = container
-    .append("g")
-    .attr("class", "geo-feat")
-    .attr("id", "states");
+  //States Container, we make this a canvas to speed up zoom and pan
+  svgcontain.append("g").attr("class", "geofeat").attr("id", "states");
 
+  //Wshed container
+  svgcontain.append("g").attr("class", "geofeat").attr("id", "wshed");
   //Create container for streams
-  var streams_contain = container
-    .append("g")
-    .attr("class", "geo-feat")
-    .attr("id", "streams");
+  svgcontain.append("g").attr("class", "geofeat").attr("id", "streams");
 
   //ID for institute that belongs to map class
-  var institute_contain = container
-    .append("g")
-    .attr("class", "geo-feat")
-    .attr("id", "institute");
+  svgcontain.append("g").attr("class", "geofeat").attr("id", "institute");
 
   //ID for institute that belongs to map class
-  var ngrrec_contain = container
-    .append("g")
-    .attr("class", "geo-feat")
-    .attr("id", "ngrrec");
+  svgcontain.append("g").attr("class", "geofeat").attr("id", "ngrrec");
 
-  var samples_contain = container
-    .append("g")
-    .attr("class", "geo-feat")
-    .attr("id", "samples");
+  //Other institutions
+  svgcontain.append("g").attr("class", "geofeat").attr("id", "samples");
 
   // We add a <g> container for the tooltip, which is hidden by default.
-  var tooltip = map_space
-    .append("div") //Append a div within <div> id:map, same level as "container"
-    .attr("id", "tooltip")
-    .attr("class", "tooltip hidden");
+  map_space.append("div").attr("id", "tooltip").attr("class", "tooltip hidden");
 
   //Create Checkbox system for displaying or hiding layers
   //requires name on checkbox input to match a layer ID
@@ -188,7 +179,7 @@ function dom_setup() {
 //Loading and Plotting
 async function load_and_plot() {
   //Pause until we read state json
-  const states = await d3.json("./features_simplified/states_geo.geojson");
+  const states = await d3.json("./features_simplified/conus_geo.json");
 
   //Pause until we get institute geojson
   const institute = await d3.json(
@@ -201,6 +192,12 @@ async function load_and_plot() {
   const streams = await d3.json(
     "./features_simplified/MS_riv_simplified.geojson"
   );
+
+  //Wait for watersheds
+  const watersheds = await d3.json(
+    "./features_simplified/huc2_simplified.json"
+  );
+
   // ====================================================================
 
   // Join the FeatureCollection's features array to path elements =======
@@ -224,7 +221,7 @@ async function load_and_plot() {
     .selectAll("path")
     .data(institute.features)
     .join("path")
-    .attr("d", geoGenerator)
+    .attr("d", geoGenerator.pointRadius(3))
     .on("mouseenter", showTooltip)
     .on("mouseout", hideTooltip)
     .on("click", showDetails);
