@@ -14,7 +14,7 @@ const geoGenerator = d3.geoPath().projection(projection);
 //Create zoom function ----------
 function handleZoom(e) {
   d3.select(this).selectAll("g").attr("transform", e.transform);
-  d3.select(this).selectAll("canvas").attr("transform", e.transform);
+  // d3.select(this).selectAll("canvas").attr("transform", e.transform);
 }
 let zoom = d3.zoom().on("zoom", handleZoom).scaleExtent([1, 10]); //Min and Max zoom bounds
 
@@ -57,7 +57,7 @@ function showDetails(event, datum) {
     }) //access text contents, add href if it starts with "http"
     .attr("title", function (B) {
       return `${B}`;
-    }) //access text contents, add href if it starts with "http"
+    })
     .attr("target", "_blank")
     .text(function (t) {
       return t;
@@ -75,6 +75,10 @@ function getToggleVisibilityHandler(d3LayerSelector) {
       lyr_tochange.classed("hidden", true);
     }
   };
+}
+
+function samplesCboxFilterHandler() {
+  console.log(d3.selectAll(".samples_cb").checked);
 }
 
 // Set up DOM with JS function
