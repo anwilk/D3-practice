@@ -13,7 +13,7 @@ const geoGenerator = d3.geoPath(projection).pointRadius(3);
 
 //Create zoom function ----------
 function handleZoom(e) {
-  d3.select(this).selectAll("g").attr("transform", e.transform);
+  d3.select("#svg-map").selectAll("g").attr("transform", e.transform);
 }
 let zoom = d3.zoom().on("zoom", handleZoom).scaleExtent([1, 10]); //Min and Max zoom bounds
 
