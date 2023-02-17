@@ -2,18 +2,19 @@
 var width = window.innerWidth;
 var height = window.innerHeight;
 var min_val = Math.min(width, height);
-var scale = min_val / 1.375;
+var scale = min_val / 1;
 
 //Create projector
 const projection = d3
   .geoAlbers()
   .scale(scale)
   .translate([width / 3.5, height / 4.25]); //specify projection to use
-const geoGenerator = d3.geoPath(projection).pointRadius(3);
+const geoGenerator = d3.geoPath().projection(projection);
 
 //Create zoom function ----------
 function handleZoom(e) {
-  d3.select("#svg-map").selectAll("g").attr("transform", e.transform);
+  d3.select(this).selectAll("g").attr("transform", e.transform);
+  d3.select(this).selectAll("canvas").attr("transform", e.transform);
 }
 let zoom = d3.zoom().on("zoom", handleZoom).scaleExtent([1, 10]); //Min and Max zoom bounds
 
@@ -61,39 +62,39 @@ function showDetails(event, datum) {
     .text(function (t) {
       return t;
     });
-
-  console.log("Values:");
-  console.log(Object.values(obj));
-  console.log("Entries:");
-  console.log(entries);
 }
 
 //Function to show layers on checkbox
-function layer_display() {
-  cb_status = this.checked;
-  lyrname = this.name;
-  lyr_tochange = d3.select(`#${lyrname}`);
+function getToggleVisibilityHandler(d3LayerSelector) {
+  return function layer_display() {
+    lyr_tochange = d3.select(d3LayerSelector);
 
-  if (cb_status === true) {
-    lyr_tochange.classed("hidden", false);
-  } else {
-    lyr_tochange.classed("hidden", true);
-  }
+    if (this.checked === true) {
+      lyr_tochange.classed("hidden", false);
+    } else {
+      lyr_tochange.classed("hidden", true);
+    }
+  };
 }
 
 // Set up DOM with JS function
 function dom_setup() {
   //Create divider for map
-  var map_space = d3.select("body").append("div").attr("id", "map");
+  var map_space = d3
+    .select("#visualization_area")
+    .append("div")
+    .attr("id", "map");
   //Create the container itself
-  var container = d3
+  var contain = d3.select("#map");
+
+  var svgcontain = d3
     .select("#map")
     .append("svg") //Make an svg within the HTML <div> with id:map
     .attr("id", "svg-map")
-    .call(zoom); //Allow us to zoom in on the container
+    .call(zoom);
 
   //Create visual bounding box for the map
-  var bounds = container
+  var bounds = svgcontain
     .append("rect")
     .attr("stroke", "black")
     .attr("width", "70vw")
@@ -102,93 +103,54 @@ function dom_setup() {
     .attr("stroke-width", "2px")
     .attr("stroke", "#656565");
 
-  //States Container
-  var states_contain = container
-    .append("g")
-    .attr("class", "geo-feat")
-    .attr("id", "states");
+  //States Container, we make this a canvas to speed up zoom and pan
+  svgcontain.append("g").attr("class", "baselyr").attr("id", "states");
 
+  //Wshed container
+  svgcontain
+    .append("g")
+    .attr("class", "baselyr")
+    .attr("id", "wsheds")
+    .classed("hidden", true);
   //Create container for streams
-  var streams_contain = container
-    .append("g")
-    .attr("class", "geo-feat")
-    .attr("id", "streams");
+  svgcontain.append("g").attr("class", "baselyr").attr("id", "streams");
+
+  //Other institutions
+  svgcontain.append("g").attr("class", "geofeat").attr("id", "samples");
 
   //ID for institute that belongs to map class
-  var institute_contain = container
-    .append("g")
-    .attr("class", "geo-feat")
-    .attr("id", "institute");
+  svgcontain.append("g").attr("class", "geofeat").attr("id", "institute");
 
   //ID for institute that belongs to map class
-  var ngrrec_contain = container
-    .append("g")
-    .attr("class", "geo-feat")
-    .attr("id", "ngrrec");
-
-  var samples_contain = container
-    .append("g")
-    .attr("class", "geo-feat")
-    .attr("id", "samples");
+  svgcontain.append("g").attr("class", "geofeat").attr("id", "ngrrec");
 
   // We add a <g> container for the tooltip, which is hidden by default.
-  var tooltip = map_space
-    .append("div") //Append a div within <div> id:map, same level as "container"
-    .attr("id", "tooltip")
-    .attr("class", "tooltip hidden");
+  map_space.append("div").attr("id", "tooltip").attr("class", "tooltip hidden");
 
-  //Create Checkbox system for displaying or hiding layers
-  //requires name on checkbox input to match a layer ID
-
-  var baselyr_menu = map_space.append("li").text("Base Layers");
-  var samples_menu = map_space.append("li").text("Data Exploration");
-
-  var bl_river = baselyr_menu.append("ul").text("Rivers");
-  var bl_states = baselyr_menu.append("ul").text("States");
-  var lyr_samples = samples_menu.append("ul").text("Samples");
-
+  //Manpulating checkboxes by ID
   //Rivers
-  bl_river
-    .append("input")
-    .attr("type", "checkbox")
-    .attr("class", "layer-cb")
-    .attr("id", "streams-cb")
-    .attr("name", "streams")
+  d3.select("#streams_cb")
     .property("checked", true)
-    .on("change", layer_display);
+    .on("change", getToggleVisibilityHandler("#streams"));
+
+  //Watersheds
+  d3.select("#wsheds_cb")
+    .property("checked", false)
+    .on("change", getToggleVisibilityHandler("#wsheds"));
 
   //States
-  bl_states
-    .append("input")
-    .attr("type", "checkbox")
-    .attr("class", "layer-cb")
-    .attr("id", "states-cb")
-    .attr("name", "states")
+  d3.select("#states_cb")
     .property("checked", true)
-    .on("change", layer_display);
-
-  //Institutions
-
-  //Sample locations
-  lyr_samples
-    .append("input")
-    .attr("type", "checkbox")
-    .attr("class", "layerCB")
-    .attr("id", "samples_cb")
-    .attr("name", "samples")
-    .property("checked", true)
-    .on("change", layer_display);
+    .on("change", getToggleVisibilityHandler("#states"));
 
   //Create Divider for details section to populate
   map_space.append("div").attr("id", "details-table");
-
-  console.log(d3.select("#cbox-samples1"));
 }
 
 //Loading and Plotting
 async function load_and_plot() {
   //Pause until we read state json
-  const states = await d3.json("./features_simplified/states_reduced.json");
+  const states = await d3.json("./features_simplified/conus_geo.json");
 
   //Pause until we get institute geojson
   const institute = await d3.json(
@@ -201,12 +163,25 @@ async function load_and_plot() {
   const streams = await d3.json(
     "./features_simplified/MS_riv_simplified.geojson"
   );
+
+  //Wait for watersheds
+  const watersheds = await d3.json(
+    "./features_simplified/huc2_simplified.json"
+  );
   // ====================================================================
 
   // Join the FeatureCollection's features array to path elements =======
   d3.select("#states") //Identify what html element to plot into
     .selectAll("path") //select (or create) path element for svg block
     .data(states.features) //use the features of the states
+    .join("path") //join states data to the path
+    .attr("d", geoGenerator) //Use geo generator to assign value to "d" attribute
+    .attr("fill", "none");
+
+  //Watersheds
+  d3.select("#wsheds") //Identify what html element to plot into
+    .selectAll("path") //select (or create) path element for svg block
+    .data(watersheds.features) //use the features of the states
     .join("path") //join states data to the path
     .attr("d", geoGenerator) //Use geo generator to assign value to "d" attribute
     .attr("fill", "none");
@@ -224,17 +199,7 @@ async function load_and_plot() {
     .selectAll("path")
     .data(institute.features)
     .join("path")
-    .attr("d", geoGenerator)
-    .on("mouseenter", showTooltip)
-    .on("mouseout", hideTooltip)
-    .on("click", showDetails);
-
-  //Duplicate section for Ngrrec
-  d3.select("#ngrrec")
-    .selectAll("path")
-    .data(ngrrec.features)
-    .join("path")
-    .attr("d", geoGenerator.pointRadius(3.5))
+    .attr("d", geoGenerator.pointRadius(3))
     .on("mouseenter", showTooltip)
     .on("mouseout", hideTooltip)
     .on("click", showDetails);
@@ -247,16 +212,24 @@ async function load_and_plot() {
     .attr("d", geoGenerator.pointRadius(1.5))
     .on("click", showDetails);
 
+  //Duplicate section for Ngrrec
+  d3.select("#ngrrec")
+    .selectAll("path")
+    .data(ngrrec.features)
+    .join("path")
+    .attr("d", geoGenerator.pointRadius(3.5))
+    .on("mouseenter", showTooltip)
+    .on("mouseout", hideTooltip)
+    .on("click", showDetails);
+
   // Tooltip on mouseover section ==========
   //Define tooltip object and context container
   var tooltip = d3.select("#tooltip");
   var container = d3.select("#map");
-
   //Function to hide tooltip on mouse out
   function hideTooltip() {
     tooltip.classed("hidden", true);
   }
-
   //Create a function to display data in tooltip
   function showTooltip(event, datum) {
     // Get the ID of the feature.
@@ -279,6 +252,9 @@ async function load_and_plot() {
       .text(id.location)
       .attr("id", "tooltip");
   }
+
+  //Adding samples options to the Samples Filter Header
+  console.log(samples.properties);
 }
 
 dom_setup();

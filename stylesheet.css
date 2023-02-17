@@ -3,17 +3,25 @@ body {
   margin: 25px;
 }
 
+* {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
 h1 {
   /* color: darkolivegreen;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #222; */
   /* text-shadow: 1px 1px 2px #222; */
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
   font-weight: 800;
   border-bottom: 3px solid #8b9137;
   padding-bottom: 5px;
 }
+
+h3 {
+  font-weight: 600;
+}
+
 #svg-map {
   width: 70vw;
   height: 50vh;
@@ -23,6 +31,14 @@ h1 {
 
 #states {
   stroke: #c6c6c6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#wsheds {
+  stroke: #62897b;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 #institute {
@@ -30,18 +46,24 @@ h1 {
   stroke: #222;
 }
 
-#points path:hover {
+#institute path:hover {
   fill: #5a84c3;
 }
 
 #streams {
   stroke: #5a84c3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 #samples {
-  fill: #8b9137;
+  fill: #a6a6a6;
   stroke: #000000;
   stroke-width: 0.25;
+}
+
+#samples path:hover {
+  fill: #8b9137;
 }
 
 #ngrrec {
@@ -64,6 +86,21 @@ h1 {
   /* text-align: center; */
 }
 
+li {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+ul {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  padding-bottom: 5px;
+}
+
+input[type="checkbox"]:checked {
+  accent-color: #8b9137;
+}
+
 .hidden {
   display: none;
 }
@@ -76,6 +113,7 @@ table {
   background-color: rgba(238, 236, 236, 0.6);
   margin-left: auto;
   margin-right: auto;
+  margin-top: 10px;
 }
 
 td {
