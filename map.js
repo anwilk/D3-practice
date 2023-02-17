@@ -259,3 +259,4 @@ async function load_and_plot() {
 
 dom_setup();
 load_and_plot();
+console.log("Load and PLot Executed")
