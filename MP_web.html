@@ -10,8 +10,9 @@
   <div>
     <h1 >Microplastics Institutions</h1>
   </div>
-  <div>
-      <h3 id = "layers_control">Layers Control</h3> 
+  <div id="layers_control">
+      <details>
+        <summary> Layers Control </summary>
         <ul>Streams<input type="checkbox" id="streams_cb">
         States<input type="checkbox" id="states_cb">
         Watersheds<input type="checkbox" id="wsheds_cb">
@@ -19,6 +20,11 @@
       <h3 id = "samples_filter">Samples Filter</h3>
       <ul id = "Plastic_type_head"> Plastic Type: HDPE<input type="checkbox" id="pHDPE_cb" class = "samples_cb">
         PVC<input type="checkbox" id="pPVC_cb" class = "samples_cb"> Polystyrene<input type="checkbox" id="pPST_cb" class = "samples_cb">
+      </details>
+  </div>
+  <div id="plastic_filter"> 
+    <h3 id = "samples_filter">Samples Filter</h3>
+    <h4 id = "Plastic_type_head">Plastic Type</h4>
       
   </div>
   <div id="visualization_area"></div>
