@@ -77,6 +77,12 @@ function getToggleVisibilityHandler(d3LayerSelector) {
   };
 }
 
+//Function to filter adta on Cbox
+function getFilterSamplesHandler() {
+  d3.selectAll(".samples_filt_cb");
+  //Check to see what checkboxes statuses are
+}
+
 // Set up DOM with JS function
 function dom_setup() {
   //Create divider for map
@@ -152,6 +158,9 @@ function dom_setup() {
   d3.select("#samples_cb")
     .property("checked", true)
     .on("change", getToggleVisibilityHandler("#samples"));
+
+  //Samples Filter
+  d3.selectAll(".samples_filt_cb").property("checked", true);
 
   //Create Divider for details section to populate
   map_space.append("div").attr("id", "details-table");

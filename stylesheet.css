@@ -119,3 +119,7 @@ table {
 td {
   padding: 10px;
 }
+
+details {
+  margin: 10px;
+}
