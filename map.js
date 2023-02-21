@@ -77,10 +77,6 @@ function getToggleVisibilityHandler(d3LayerSelector) {
   };
 }
 
-function samplesCboxFilterHandler() {
-  console.log(d3.selectAll(".samples_cb").checked);
-}
-
 // Set up DOM with JS function
 function dom_setup() {
   //Create divider for map
@@ -146,6 +142,16 @@ function dom_setup() {
   d3.select("#states_cb")
     .property("checked", true)
     .on("change", getToggleVisibilityHandler("#states"));
+
+  //Institutions
+  d3.select("#institutions_cb")
+    .property("checked", true)
+    .on("change", getToggleVisibilityHandler("#institute"));
+
+  //Samples
+  d3.select("#samples_cb")
+    .property("checked", true)
+    .on("change", getToggleVisibilityHandler("#samples"));
 
   //Create Divider for details section to populate
   map_space.append("div").attr("id", "details-table");
@@ -263,4 +269,4 @@ async function load_and_plot() {
 
 dom_setup();
 load_and_plot();
-console.log("Load and PLot Executed")
+console.log("Load and PLot Executed");
