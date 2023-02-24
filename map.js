@@ -245,6 +245,7 @@ async function load_and_plot() {
   //Define tooltip object and context container
   var tooltip = d3.select("#tooltip");
   var container = d3.select("#map");
+
   //Function to hide tooltip on mouse out
   function hideTooltip() {
     tooltip.classed("hidden", true);
@@ -278,4 +279,4 @@ async function load_and_plot() {
 
 dom_setup();
 load_and_plot();
-console.log("Load and PLot Executed");
+console.log("Load and Plot Executed");
