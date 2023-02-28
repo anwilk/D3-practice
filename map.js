@@ -8,7 +8,7 @@ var scale = min_val / 1;
 const projection = d3
   .geoAlbers()
   .scale(scale)
-  .translate([width / 3.5, height / 4.25]); //specify projection to use
+  .translate([width / 2.25, height / 4.25]); //specify projection to use
 const geoGenerator = d3.geoPath().projection(projection);
 
 //Create zoom function ----------
@@ -102,8 +102,7 @@ function dom_setup() {
   //Create visual bounding box for the map
   var bounds = svgcontain
     .append("rect")
-    .attr("stroke", "black")
-    .attr("width", "70vw")
+    .attr("width", "93vw")
     .attr("height", "50vh")
     .attr("fill", "none")
     .attr("stroke-width", "2px")
