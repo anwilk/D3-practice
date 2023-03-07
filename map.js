@@ -164,8 +164,9 @@ function dom_setup() {
 
 //Loading and Plotting
 async function load_and_plot() {
-  //Pause until we read state json
-  const states = await d3.json("./features_simplified/conus_topojs.json");
+  //Pause until we read state topojson
+  var states_topo = await d3.json("./features_simplified/conus_topojs.json");
+  var states = topojson.feature(states_topo, states_topo.objects.conus_topojs);
 
   //Pause until we get institute geojson
   const institute = await d3.json(
@@ -180,8 +181,11 @@ async function load_and_plot() {
   );
 
   //Wait for watersheds
-  const watersheds = await d3.json(
-    "./features_simplified/huc2_simplified.json"
+  var watersheds_topo = await d3.json("./features_simplified/huc2_topojs.json");
+  console.log(watersheds_topo);
+  var watersheds = topojson.feature(
+    watersheds_topo,
+    watersheds_topo.objects.huc2_simplified
   );
   // ====================================================================
 
