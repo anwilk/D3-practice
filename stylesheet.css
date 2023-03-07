@@ -9,8 +9,8 @@ body {
 }
 
 #map {
-  height: 500px;
-  width: 960px;
+  height: 50vh;
+  width: 93vw;
 }
 
 div {
@@ -32,8 +32,8 @@ h3 {
 }
 
 #svg-map {
-  width: 960px;
-  height: 500px;
+  height: 50vh;
+  width: 93vw;
   display: grid;
   margin: auto;
 }
