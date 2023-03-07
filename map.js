@@ -86,10 +86,7 @@ function getFilterSamplesHandler() {
 // Set up DOM with JS function
 function dom_setup() {
   //Create divider for map
-  var map_space = d3
-    .select("#visualization_area")
-    .append("div")
-    .attr("id", "map");
+  var map_space = d3.select("#viz_area").append("div").attr("id", "map");
   //Create the container itself
   var contain = d3.select("#map");
 
@@ -168,7 +165,7 @@ function dom_setup() {
 //Loading and Plotting
 async function load_and_plot() {
   //Pause until we read state json
-  const states = await d3.json("./features_simplified/conus_geo.json");
+  const states = await d3.json("./features_simplified/conus_topojs.json");
 
   //Pause until we get institute geojson
   const institute = await d3.json(

@@ -8,6 +8,11 @@ body {
     "Lucida Sans", Arial, sans-serif;
 }
 
+#map {
+  height: 500px;
+  width: 960px;
+}
+
 div {
   margin: 5px;
 }
@@ -27,8 +32,8 @@ h3 {
 }
 
 #svg-map {
-  width: 93vw;
-  height: 50vh;
+  width: 960px;
+  height: 500px;
   display: grid;
   margin: auto;
 }
