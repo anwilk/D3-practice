@@ -1,14 +1,18 @@
 //Get vars for scaling
-var width = window.innerWidth;
-var height = window.innerHeight;
+var width = document.getElementById("map").offsetWidth;
+var height = document.getElementById("map").offsetHeight;
+var aspect = width / height;
 var min_val = Math.min(width, height);
-var scale = min_val / 1;
+var scale = min_val + 200;
+
+console.log([width, height]);
 
 //Create projector
 const projection = d3
-  .geoAlbers()
+  .geoMercator()
   .scale(scale)
-  .translate([width / 2.25, height / 4.25]); //specify projection to use
+  .center([-97.35, 39.5]) //Approximate Visual Center of US
+  .translate([width / 2, height / 2]); //Plot center @ center of window viewbox
 const geoGenerator = d3.geoPath().projection(projection);
 
 //Create zoom function ----------
@@ -85,25 +89,10 @@ function getFilterSamplesHandler() {
 
 // Set up DOM with JS function
 function dom_setup() {
-  //Create divider for map
-  var map_space = d3.select("#viz_area").append("div").attr("id", "map");
   //Create the container itself
   var contain = d3.select("#map");
 
-  var svgcontain = d3
-    .select("#map")
-    .append("svg") //Make an svg within the HTML <div> with id:map
-    .attr("id", "svg-map")
-    .call(zoom);
-
-  //Create visual bounding box for the map
-  var bounds = svgcontain
-    .append("rect")
-    .attr("width", "93vw")
-    .attr("height", "50vh")
-    .attr("fill", "none")
-    .attr("stroke-width", "2px")
-    .attr("stroke", "#656565");
+  var svgcontain = d3.select("#svg-map").call(zoom);
 
   //States Container, we make this a canvas to speed up zoom and pan
   svgcontain.append("g").attr("class", "baselyr").attr("id", "states");
@@ -127,7 +116,7 @@ function dom_setup() {
   svgcontain.append("g").attr("class", "geofeat").attr("id", "ngrrec");
 
   // We add a <g> container for the tooltip, which is hidden by default.
-  map_space.append("div").attr("id", "tooltip").attr("class", "tooltip hidden");
+  contain.append("div").attr("id", "tooltip").attr("class", "tooltip hidden");
 
   //Manpulating checkboxes by ID
   //Rivers
@@ -159,7 +148,7 @@ function dom_setup() {
   d3.selectAll(".samples_filt_cb").property("checked", true);
 
   //Create Divider for details section to populate
-  map_space.append("div").attr("id", "details-table");
+  contain.append("div").attr("id", "details-table");
 }
 
 //Loading and Plotting

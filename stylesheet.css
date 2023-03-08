@@ -1,16 +1,12 @@
 /* Popup container - can be anything you want */
-body {
-  margin: 25px;
-}
 
 * {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
 
-#map {
-  height: 50vh;
-  width: 93vw;
+body {
+  margin: 25px;
 }
 
 div {
@@ -18,12 +14,8 @@ div {
 }
 
 h1 {
-  /* color: darkolivegreen;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: #222; */
-  /* text-shadow: 1px 1px 2px #222; */
   font-weight: 800;
-  border-bottom: 3px solid #8b9137;
+  border-bottom: 3px solid #376991;
   padding-bottom: 5px;
 }
 
@@ -31,49 +23,43 @@ h3 {
   font-weight: 600;
 }
 
-#svg-map {
-  height: 50vh;
-  width: 93vw;
-  display: grid;
-  margin: auto;
+details {
+  border-right: 3px solid #999999;
 }
 
-#states {
-  stroke: #c6c6c6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+summary {
+  background-color: #c9c9c9;
+  padding: 5px;
 }
 
-#wsheds {
-  stroke: #62897b;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+details,
+summary {
+  border-radius: 5px;
 }
 
-#institute {
-  fill: #a8ad5e;
-  stroke: #222;
+details > details {
+  margin: 10px 10px 0px 15px;
 }
 
-.geofeat path:hover {
-  fill: #5a84c3;
+td {
+  padding: 10px;
 }
 
-#streams {
-  stroke: #5a84c3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+ul {
+  padding: 0px 0px 0px 20px;
 }
 
-#samples {
-  fill: #a6a6a6;
-  stroke: #000000;
-  stroke-width: 0.075%;
+table {
+  border: 2px solid #376991;
+  border-radius: 25px;
+  background-color: rgba(238, 236, 236, 0.6);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
 }
 
-#ngrrec {
-  fill: #fcdb03;
-  stroke: #000000;
+input[type="checkbox"]:checked {
+  accent-color: #376991;
 }
 
 .tooltip {
@@ -91,32 +77,16 @@ h3 {
   /* text-align: center; */
 }
 
-li {
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-}
-
-ul {
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-  padding-bottom: 5px;
-}
-
-input[type="checkbox"]:checked {
-  accent-color: #8b9137;
+.geofeat path:hover {
+  fill: #5a84c3;
 }
 
 .hidden {
   display: none;
 }
 
-table {
-  border: 2px solid #8b9137;
-  border-radius: 25px;
-  background-color: rgba(238, 236, 236, 0.6);
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 10px;
+.scrollable {
+  overflow-y: auto;
 }
 
 #details-table {
@@ -124,14 +94,61 @@ table {
   overflow-y: auto;
 }
 
-td {
-  padding: 10px;
+#viz_area {
+  display: flex;
+  height: 50vh;
+  width: 93vw;
+  /* background-color: #62897b; */
+  border: 2px solid;
 }
 
-select {
-  padding: 2px;
+#control_panel {
+  /* background-color: #5a84c3; */
+  width: 250px;
+  order: 0;
+}
+#map {
+  /* background-color: #a6a6a6; */
+  flex-grow: 1;
 }
 
-details {
-  margin: 10px;
+#svg-map {
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  /* background-color: #fcdb03; */
+}
+
+#states {
+  stroke: #c6c6c6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#wsheds {
+  stroke: #8f9797;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#institute {
+  fill: #70a46e;
+  stroke: #222;
+}
+
+#streams {
+  stroke: #376991;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#samples {
+  fill: #a6a6a6;
+  stroke: #000000;
+  stroke-width: 0.075%;
+}
+
+#ngrrec {
+  fill: #fcdb03;
+  stroke: #000000;
 }

@@ -5,9 +5,10 @@
      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
      crossorigin=""/>
 
-   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-     crossorigin=""></script>
+     crossorigin="">
+    </script>
   <link rel = 'stylesheet', href="./stylesheet.css", type="text/css">
   <script src="https://d3js.org/d3.v7.js"></script>
   <script src="https://unpkg.com/topojson@3"></script>
@@ -15,7 +16,7 @@
   <title> Map of Microplastics institutions </title>
 </head>
 
-<body >
+<body>
   <div>
     <h1 >Microplastics Institutions</h1>
   </div>
@@ -25,36 +26,48 @@
       Click on sample locations or institutions to learn more about who is doing research and what sorts of data are collected!
     </p>
   </div>
-  <div id="layers_control">
-      <details>
-        <summary> Layers Control </summary>
-        <ul>Streams<input type="checkbox" id="streams_cb">
-        States<input type="checkbox" id="states_cb">
-        Watersheds<input type="checkbox" id="wsheds_cb">
-        Institutions<input type="checkbox" id="institutions_cb">
-        Samples<input type="checkbox" id="samples_cb"></ul>
-        </details>
-      <details>
-        <summary id = "samples_filter">Samples Filter</summary>
-      <ul id = "Plastic_type_head"> 
-        Plastic Type: HDPE<input type="checkbox" id="pHDPE_cb" class = "samples_filt_cb">
-        PVC<input type="checkbox" id="pPVC_cb" class = "samples_filt_cb"> 
-        Polystyrene<input type="checkbox" id="pPST_cb" class = "samples_filt_cb">
-      </details>
-  </div>
   <div id = 'data_download'>
-      <button type="button" id ="downloadNow"><a href="./features_simplified/mpweb_dummy.geojson" download> Samples Data </a></button>
-      <button type="button" id ="downloadNow"><a href="./features_simplified/institute_poi.geojson" download>Download Institutions Data</a></button>
-      
-      <!-- <select name="FiletoDownload" id="data_dl_drop">
-        <option value = ""> -Select data- </option>
-        <option value = "samples"> Samples </option>
-        <option value = "institute"> Institutions </option> 
-      </select> -->
-    </div>
-
+    <button type="button" id ="downloadNow"><a href="./features_simplified/mpweb_dummy.geojson" download> Samples Data </a></button>
+    <button type="button" id ="downloadNow"><a href="./features_simplified/institute_poi.geojson" download>Download Institutions Data</a></button>
   </div>
-  <div id="viz_area"></div>
+  <div id="viz_area">
+    <div id = 'control_panel', class = "scrollable">
+      <div id="layers_control">
+        <details>
+          <summary id = "layers_control"> Layers Control </summary>
+            <div>
+              <ul><input type="checkbox" id="streams_cb">Streams</ul>
+              <ul><input type="checkbox" id="states_cb">States</ul>
+              <ul><input type="checkbox" id="wsheds_cb">Watersheds</ul>
+              <ul><input type="checkbox" id="institutions_cb">Institutions</ul>
+              <ul><input type="checkbox" id="samples_cb">Samples</ul>
+            </div>
+        </details>
+      </div>
+      <div id = samples_control>
+        <details id = "samples_filter">
+          <summary>Samples Filter</summary>
+            <details id = "plastic_type_head">
+              <summary> Plastic Type </summary>
+                <ul><input type="checkbox" id="pHDPE_cb" class = "samples_filt_cb">HDPE</ul>
+                <ul><input type="checkbox" id="pPVC_cb" class = "samples_filt_cb">PVC</ul>
+                <ul><input type="checkbox" id="pPST_cb" class = "samples_filt_cb">Polystyrene</ul>
+              </summary>
+            </details>
+            <details id = "sampling_type_head">
+              <summary>Sampling Type</summary>
+                <ul><input type="checkbox" id="sSoil_cb" class = "samples_filt_cb">Soil</ul>
+                <ul><input type="checkbox" id="sAir_cb" class = "samples_filt_cb">Air</ul>
+                <ul><input type="checkbox" id="sWater_cb" class = "samples_filt_cb">Water</ul>
+              </summary>
+            </details>
+        </details>
+      </div>
+    </div>
+    <div id = "map">
+      <svg id = "svg-map"></svg>
+    </div>
+  </div>
   <script src="./map.js"></script>
 </body>
 
