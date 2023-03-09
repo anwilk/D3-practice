@@ -3,7 +3,7 @@ var width = document.getElementById("map").offsetWidth;
 var height = document.getElementById("map").offsetHeight;
 var aspect = width / height;
 var min_val = Math.min(width, height);
-var scale = min_val + 200;
+var scale = min_val + 150;
 
 console.log([width, height]);
 
@@ -20,7 +20,7 @@ function handleZoom(e) {
   d3.select(this).selectAll("g").attr("transform", e.transform);
   // d3.select(this).selectAll("canvas").attr("transform", e.transform);
 }
-let zoom = d3.zoom().on("zoom", handleZoom).scaleExtent([1, 10]); //Min and Max zoom bounds
+let zoom = d3.zoom().on("zoom", handleZoom); //Min and Max zoom bounds
 
 //Details on click section --------
 function showDetails(event, datum) {
@@ -29,7 +29,6 @@ function showDetails(event, datum) {
 
   //Get data
   var table = d3.select("#details-table").append("table");
-
   //Create table in the detials <div>
   thead = table.append("thead").append("tr");
   tbody = table.append("tbody");
@@ -45,6 +44,8 @@ function showDetails(event, datum) {
     .enter() //Make selection of missing elements
     .append("tr"); //Append a row to the selection (so that it creates a row)
 
+  console.log(entries);
+  console.log(values);
   //Create table cells
   var td = rows
     .selectAll("tr")
@@ -115,7 +116,7 @@ function dom_setup() {
   //ID for institute that belongs to map class
   svgcontain.append("g").attr("class", "geofeat").attr("id", "ngrrec");
 
-  // We add a <g> container for the tooltip, which is hidden by default.
+  // We add a <div> container for the tooltip, which is hidden by default.
   contain.append("div").attr("id", "tooltip").attr("class", "tooltip hidden");
 
   //Manpulating checkboxes by ID
@@ -148,7 +149,7 @@ function dom_setup() {
   d3.selectAll(".samples_filt_cb").property("checked", true);
 
   //Create Divider for details section to populate
-  contain.append("div").attr("id", "details-table");
+  d3.select("#viz_area").append("div").attr("id", "details-table");
 }
 
 //Loading and Plotting
@@ -176,7 +177,6 @@ async function load_and_plot() {
     watersheds_topo,
     watersheds_topo.objects.huc2_simplified
   );
-  // ====================================================================
 
   // Join the FeatureCollection's features array to path elements =======
   d3.select("#states") //Identify what html element to plot into

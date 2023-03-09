@@ -41,21 +41,25 @@ details > details {
   margin: 10px 10px 0px 15px;
 }
 
-td {
-  padding: 10px;
-}
-
 ul {
   padding: 0px 0px 0px 20px;
 }
 
+td {
+  outline: 1px solid black;
+  padding: 0px 50px 0px 0px;
+  word-wrap: break-word;
+}
+
 table {
   border: 2px solid #376991;
-  border-radius: 25px;
+  border-radius: 5px;
   background-color: rgba(238, 236, 236, 0.6);
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;
+  table-layout: fixed;
+  width: 300px;
 }
 
 input[type="checkbox"]:checked {
@@ -90,26 +94,28 @@ input[type="checkbox"]:checked {
 }
 
 #details-table {
-  height: 200px;
   overflow-y: auto;
+  width: 300px;
+  background-color: #fcdb03;
 }
 
 #viz_area {
   display: flex;
-  height: 50vh;
+  height: 80vh;
   width: 93vw;
-  /* background-color: #62897b; */
+  background-color: #62897b;
   border: 2px solid;
 }
 
 #control_panel {
-  /* background-color: #5a84c3; */
+  background-color: #5a84c3;
   width: 250px;
   order: 0;
 }
 #map {
-  /* background-color: #a6a6a6; */
+  background-color: #a6a6a6;
   flex-grow: 1;
+  flex-shrink: 1;
 }
 
 #svg-map {
