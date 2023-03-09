@@ -96,26 +96,27 @@ input[type="checkbox"]:checked {
 #details-table {
   overflow-y: auto;
   width: 300px;
-  background-color: #fcdb03;
+  /* background-color: #fcdb03; */
 }
 
 #viz_area {
   display: flex;
   height: 80vh;
   width: 93vw;
-  background-color: #62897b;
+  /* background-color: #62897b; */
   border: 2px solid;
 }
 
 #control_panel {
-  background-color: #5a84c3;
+  /* background-color: #5a84c3; */
   width: 250px;
   order: 0;
 }
 #map {
-  background-color: #a6a6a6;
+  /* background-color: #a6a6a6; */
   flex-grow: 1;
   flex-shrink: 1;
+  border: 1px solid black;
 }
 
 #svg-map {
