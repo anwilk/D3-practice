@@ -3,10 +3,11 @@
 * {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 body {
-  margin: 25px;
+  margin: 0px;
 }
 
 div {
@@ -37,8 +38,8 @@ summary {
   border-radius: 5px;
 }
 
-details > details {
-  margin: 10px 10px 0px 15px;
+details {
+  margin: 10px 10px 10px 15px;
 }
 
 ul {
@@ -78,6 +79,7 @@ input[type="checkbox"]:checked {
   box-shadow: 0px 0px 5px 0px #a6a6a6;
   opacity: 0.9;
   position: absolute;
+  z-index: 10;
   /* text-align: center; */
 }
 
@@ -93,37 +95,47 @@ input[type="checkbox"]:checked {
   overflow-y: auto;
 }
 
-#details-table {
-  overflow-y: auto;
-  width: 300px;
-  /* background-color: #fcdb03; */
-}
-
 #viz_area {
   display: flex;
-  height: 80vh;
-  width: 93vw;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100%;
   /* background-color: #62897b; */
-  border: 2px solid;
+}
+
+#tables_and_summary_figs {
+  overflow-y: auto;
+  flex: 1;
+  height: auto;
+  border: 1px solid black;
+  /* background-color: #d7951a; */
+}
+
+#control_panel_and_map {
+  flex: 3;
+  /* background-color: violet; */
+  width: auto;
+  height: auto;
+  position: relative;
 }
 
 #control_panel {
   /* background-color: #5a84c3; */
   width: 250px;
-  order: 0;
-}
-#map {
-  /* background-color: #a6a6a6; */
-  flex-grow: 1;
-  flex-shrink: 1;
-  border: 1px solid black;
+  z-index: 3;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  background-color: #dadadae5;
 }
 
 #svg-map {
-  margin: auto;
+  /* background-color: #fcdb03; */
+  z-index: 1;
   width: 100%;
   height: 100%;
-  /* background-color: #fcdb03; */
+  position: relative;
 }
 
 #states {

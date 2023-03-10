@@ -1,9 +1,9 @@
 //Get vars for scaling
-var width = document.getElementById("map").offsetWidth;
-var height = document.getElementById("map").offsetHeight;
+var width = document.getElementById("control_panel_and_map").offsetWidth;
+var height = document.getElementById("control_panel_and_map").offsetHeight;
 var aspect = width / height;
 var min_val = Math.min(width, height);
-var scale = min_val + 150;
+var scale = min_val - 100;
 
 console.log([width, height]);
 
@@ -28,7 +28,7 @@ function showDetails(event, datum) {
   d3.select("table").remove();
 
   //Get data
-  var table = d3.select("#details-table").append("table");
+  var table = d3.select("#tables_and_summary_figs").append("table");
   //Create table in the detials <div>
   thead = table.append("thead").append("tr");
   tbody = table.append("tbody");
@@ -91,7 +91,7 @@ function getFilterSamplesHandler() {
 // Set up DOM with JS function
 function dom_setup() {
   //Create the container itself
-  var contain = d3.select("#map");
+  var contain = d3.select("#control_panel_and_map");
 
   var svgcontain = d3.select("#svg-map").call(zoom);
 
@@ -147,9 +147,6 @@ function dom_setup() {
 
   //Samples Filter
   d3.selectAll(".samples_filt_cb").property("checked", true);
-
-  //Create Divider for details section to populate
-  d3.select("#viz_area").append("div").attr("id", "details-table");
 }
 
 //Loading and Plotting
@@ -233,7 +230,7 @@ async function load_and_plot() {
   // Tooltip on mouseover section ==========
   //Define tooltip object and context container
   var tooltip = d3.select("#tooltip");
-  var container = d3.select("#map");
+  var container = d3.select("#control_panel_and_map");
 
   //Function to hide tooltip on mouse out
   function hideTooltip() {
