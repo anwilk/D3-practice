@@ -152,6 +152,7 @@ input[type="checkbox"]:checked {
   stroke: #8f9797;
   stroke-linecap: round;
   stroke-linejoin: round;
+  stroke-width: 0.5px;
 }
 
 #institute {
