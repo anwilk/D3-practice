@@ -17,8 +17,23 @@ const geoGenerator = d3.geoPath().projection(projection);
 
 //Create zoom function ----------
 function handleZoom(e) {
+  var pt_rad = Math.min(3, 10 / (e.transform.k * e.transform.k * 0.25) + 0.25);
+  console.log(pt_rad);
+
   d3.select(this).selectAll("g").attr("transform", e.transform);
-  // d3.select(this).selectAll("canvas").attr("transform", e.transform);
+
+  d3.selectAll("path")
+    .attr("d", geoGenerator.pointRadius(pt_rad))
+    .attr("stroke-width", function (s) {
+      return pt_rad / 4;
+    });
+
+  d3.selectAll(".inst")
+    .selectAll("path")
+    .attr("d", geoGenerator.pointRadius(pt_rad * 1.75))
+    .attr("stroke-width", function (s) {
+      return pt_rad / 4;
+    });
 }
 let zoom = d3.zoom().on("zoom", handleZoom); //Min and Max zoom bounds
 
@@ -201,10 +216,11 @@ async function load_and_plot() {
 
   //Separate element used so that mouseover interaction is only applied to institute
   d3.select("#institute")
+    .attr("class", "inst")
     .selectAll("path")
     .data(institute.features)
     .join("path")
-    .attr("d", geoGenerator.pointRadius(3))
+    .attr("d", geoGenerator.pointRadius(5))
     .on("mouseenter", showTooltip)
     .on("mouseout", hideTooltip)
     .on("click", showDetails);
@@ -214,15 +230,16 @@ async function load_and_plot() {
     .selectAll("path")
     .data(samples.features)
     .join("path")
-    .attr("d", geoGenerator.pointRadius(1.5))
+    .attr("d", geoGenerator.pointRadius(3))
     .on("click", showDetails);
 
   //Duplicate section for Ngrrec
   d3.select("#ngrrec")
+    .attr("class", "inst")
     .selectAll("path")
     .data(ngrrec.features)
     .join("path")
-    .attr("d", geoGenerator.pointRadius(3.5))
+    .attr("d", geoGenerator.pointRadius(5))
     .on("mouseenter", showTooltip)
     .on("mouseout", hideTooltip)
     .on("click", showDetails);
