@@ -35,7 +35,7 @@ function handleZoom(e) {
       return pt_rad / 4;
     });
 }
-let zoom = d3.zoom().on("zoom", handleZoom); //Min and Max zoom bounds
+let zoom = d3.zoom().on("zoom", handleZoom).on("end", handleZoom); //Min and Max zoom bounds
 
 //Details on click section --------
 function showDetails(event, datum) {
@@ -280,6 +280,10 @@ async function load_and_plot() {
   console.log(samples.properties);
 }
 
+//Function to pull current plastic types selection
+
 dom_setup();
 load_and_plot();
 console.log("Load and Plot Executed");
+console.log("checked");
+console.log(d3.selectAll(".samples_filt_cb").property("checked"));
