@@ -112,13 +112,6 @@ function dom_setup() {
   //Create the container itself
   var contain = d3.select("#control_panel_and_map");
   var svgcontain = d3.select("#svg-map").call(zoom);
-  var canvas = d3
-    .select("#base_canvas")
-    .append("canvas")
-    .attr("width", "500px")
-    .attr("height", "500px");
-  var context = canvas.node().getContext("2d");
-
   //States Container, we make this a canvas to speed up zoom and pan
   svgcontain.append("g").attr("class", "baselyr").attr("id", "states");
 
