@@ -35,7 +35,11 @@ function handleZoom(e) {
       return pt_rad / 4;
     });
 }
-let zoom = d3.zoom().on("zoom", handleZoom).on("end", handleZoom); //Min and Max zoom bounds
+let zoom = d3
+  .zoom()
+  .scaleExtent([1, 15])
+  .on("zoom", handleZoom)
+  .on("end", handleZoom); //Min and Max zoom bounds
 
 //Details on click section --------
 function showDetails(event, datum) {
