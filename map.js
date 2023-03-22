@@ -111,8 +111,13 @@ function getFilterSamplesHandler() {
 function dom_setup() {
   //Create the container itself
   var contain = d3.select("#control_panel_and_map");
-
   var svgcontain = d3.select("#svg-map").call(zoom);
+  var canvas = d3
+    .select("#base_canvas")
+    .append("canvas")
+    .attr("width", "500px")
+    .attr("height", "500px");
+  var context = canvas.node().getContext("2d");
 
   //States Container, we make this a canvas to speed up zoom and pan
   svgcontain.append("g").attr("class", "baselyr").attr("id", "states");
@@ -182,10 +187,14 @@ async function load_and_plot() {
   const ngrrec = await d3.json("./features_simplified/ngrrec.geojson");
 
   //Pause while we get streams
-  const streams = await d3.json(
-    "./features_simplified/MS_riv_simplified.geojson"
+  const streams_topo = await d3.json(
+    "./features_simplified/MS_riv_topojs.json"
   );
 
+  var streams = topojson.feature(
+    streams_topo,
+    streams_topo.objects.MS_riv_simplified
+  );
   //Wait for watersheds
   var watersheds_topo = await d3.json("./features_simplified/huc2_topojs.json");
   console.log(watersheds_topo);
