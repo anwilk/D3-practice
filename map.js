@@ -17,9 +17,7 @@ const geoGenerator = d3.geoPath().projection(projection);
 
 //Create zoom function ----------
 function handleZoom(e) {
-  var pt_rad = Math.min(3, 10 / (e.transform.k * e.transform.k * 0.25) + 0.25);
-  console.log(pt_rad);
-
+  var pt_rad = Math.min(3, 10 / (e.transform.k * e.transform.k * 0.5) + 0.25);
   d3.select(this).selectAll("g").attr("transform", e.transform);
 
   d3.selectAll("path")
@@ -44,10 +42,16 @@ let zoom = d3
 //Details on click section --------
 function showDetails(event, datum) {
   //Remove existing table first
-  d3.select("table").remove();
+  d3.select("#inspector_div").remove();
 
   //Get data
-  var table = d3.select("#tables_and_summary_figs").append("table");
+  var inspector_div = d3
+    .select("#tables_and_summary_figs")
+    .append("div")
+    .attr("id", "inspector_div");
+
+  inspector_div.append("h2").text("Data Inspection Table");
+  var table = d3.select("#inspector_div").append("table");
   //Create table in the detials <div>
   thead = table.append("thead").append("tr");
   tbody = table.append("tbody");

@@ -47,16 +47,19 @@
       </div>
     </div>
     <div id = "tables_and_summary_figs">
-      <h3>Microplastics Institutions Visuzalization</h3>
+      <h2>Microplastics Institutions Visuzalization</h2>
       <div id = "info">
         <p>Microplastics research requires many considerations and is conducted by a variety of institutions.
           Explore a variety of organizations conducting critical research on this emerging contaminant by interacting with the map below. 
           Click on sample locations or institutions to learn more about who is doing research and what sorts of data are collected!
         </p>
       </div>
-      <div id = 'data_download'>
-        <button type="button" id ="downloadNow"><a href="./features_simplified/mpweb_dummy.geojson" download> Samples Data </a></button>
-        <button type="button" id ="downloadNow"><a href="./features_simplified/institute_poi.geojson" download>Download Institutions Data</a></button>
+      <div id = "data_dl_contain">
+        <details id = 'data_download'>
+          <summary>Data Download</summary>
+          <button type="button" id ="downloadNow"><a href="./features_simplified/mpweb_dummy.geojson" download> Samples Data </a></button>
+          <button type="button" id ="downloadInst"><a href="./features_simplified/institute_poi.geojson" download>Download Institutions Data</a></button>
+        </details>
       </div>
     </div>
   </div>
