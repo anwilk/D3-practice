@@ -90,8 +90,8 @@ button {
   flex: 1;
   height: auto;
   border: 1px solid black;
-  padding-right: 5px;
-  padding-left: 5px;
+  padding-right: 1%;
+  padding-left: 1%;
   padding-top: 0px;
   /* background-color: #d7951a; */
 }
