@@ -59,32 +59,33 @@ function showDetails(event, datum) {
   //Create row for each "data"
   var rows = tbody
     .selectAll("tr") //select rows
-    .data(entries) //Bind Data to DOM
-    .enter() //Make selection of missing elements
-    .append("tr"); //Append a row to the selection (so that it creates a row)
-
-  console.log(entries);
-  console.log(values);
+    .data(values.filter((d) => typeof d === "string")) //Filter values data to those that are stings
+    .join("tr") //Append a row to the selection (so that it creates a row for each value pair)
+    .append("td");
   //Create table cells
   var td = rows
-    .selectAll("tr")
+    .selectAll("td")
     .data(function (d) {
-      return d;
-    })
-    .enter()
-    .append("td")
-    .append("a")
+      return [d];
+    }) //Make datum put into cell an array version of each string
+    .join("a")
     .attr("href", function (b) {
       if (`${b}`.startsWith("ht")) {
         return `${b}`;
       }
-    }) //access text contents, add href if it starts with "http"
-    .attr("title", function (B) {
-      return `${B}`;
+    })
+    .attr("title", function (L) {
+      if (`${L}`.startsWith("ht")) {
+        return `${L}`;
+      }
     })
     .attr("target", "_blank")
     .text(function (t) {
-      return t;
+      if (`${t}`.startsWith("ht")) {
+        return "Website";
+      } else {
+        return `${t}`;
+      }
     });
 }
 
@@ -101,9 +102,10 @@ function getToggleVisibilityHandler(d3LayerSelector) {
   };
 }
 
-//Function to filter adta on Cbox
+//Function to filter data on Cbox
 function getFilterSamplesHandler() {
-  d3.selectAll(".samples_filt_cb");
+  var filter_check = d3.selectAll(".samples_filt_cb");
+  console.log(filter_check);
   //Check to see what checkboxes statuses are
 }
 
@@ -136,7 +138,7 @@ function dom_setup() {
   // We add a <div> container for the tooltip, which is hidden by default.
   contain.append("div").attr("id", "tooltip").attr("class", "tooltip hidden");
 
-  //Manpulating checkboxes by ID
+  //Manpulating visibility of layers by checkboxes and ID
   //Rivers
   d3.select("#streams_cb")
     .property("checked", true)
@@ -161,9 +163,6 @@ function dom_setup() {
   d3.select("#samples_cb")
     .property("checked", true)
     .on("change", getToggleVisibilityHandler("#samples"));
-
-  //Samples Filter
-  d3.selectAll(".samples_filt_cb").property("checked", true);
 }
 
 //Loading and Plotting
@@ -190,7 +189,6 @@ async function load_and_plot() {
   );
   //Wait for watersheds
   var watersheds_topo = await d3.json("./features_simplified/huc2_topojs.json");
-  console.log(watersheds_topo);
   var watersheds = topojson.feature(
     watersheds_topo,
     watersheds_topo.objects.huc2_simplified
@@ -281,15 +279,11 @@ async function load_and_plot() {
       .text(id.location)
       .attr("id", "tooltip");
   }
-
-  //Adding samples options to the Samples Filter Header
-  console.log(samples.properties);
 }
 
 //Function to pull current plastic types selection
 
 dom_setup();
 load_and_plot();
+getFilterSamplesHandler();
 console.log("Load and Plot Executed");
-console.log("checked");
-console.log(d3.selectAll(".samples_filt_cb").property("checked"));
