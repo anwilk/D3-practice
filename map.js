@@ -59,7 +59,7 @@ function showDetails(event, datum) {
   //Create row for each "data"
   var rows = tbody
     .selectAll("tr") //select rows
-    .data(values.filter((d) => typeof d === "string")) //Filter values data to those that are stings
+    .data(values.filter((d) => typeof d === "string")) //Filter values data to those that are strings
     .join("tr") //Append a row to the selection (so that it creates a row for each value pair)
     .append("td");
   //Create table cells
@@ -92,7 +92,7 @@ function showDetails(event, datum) {
 //Function to show layers on checkbox
 function getToggleVisibilityHandler(d3LayerSelector) {
   return function layer_display() {
-    lyr_tochange = d3.select(d3LayerSelector);
+    lyr_tochange = d3.selectAll(d3LayerSelector);
 
     if (this.checked === true) {
       lyr_tochange.classed("hidden", false);
@@ -130,10 +130,10 @@ function dom_setup() {
   svgcontain.append("g").attr("class", "geofeat").attr("id", "samples");
 
   //ID for institute that belongs to map class
-  svgcontain.append("g").attr("class", "geofeat").attr("id", "institute");
+  svgcontain.append("g").attr("class", "inst").attr("id", "institute");
 
   //ID for institute that belongs to map class
-  svgcontain.append("g").attr("class", "geofeat").attr("id", "ngrrec");
+  svgcontain.append("g").attr("class", "inst").attr("id", "ngrrec");
 
   // We add a <div> container for the tooltip, which is hidden by default.
   contain.append("div").attr("id", "tooltip").attr("class", "tooltip hidden");
@@ -157,7 +157,7 @@ function dom_setup() {
   //Institutions
   d3.select("#institutions_cb")
     .property("checked", true)
-    .on("change", getToggleVisibilityHandler("#institute"));
+    .on("change", getToggleVisibilityHandler(".inst"));
 
   //Samples
   d3.select("#samples_cb")
