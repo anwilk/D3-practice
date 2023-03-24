@@ -17,7 +17,7 @@ const geoGenerator = d3.geoPath().projection(projection);
 
 //Create zoom function ----------
 function handleZoom(e) {
-  var pt_rad = Math.min(3, 10 / (e.transform.k * e.transform.k * 0.5) + 0.25);
+  var pt_rad = Math.min(3, 3 / e.transform.k ** 1.25 + 0.35);
   d3.select(this).selectAll("g").attr("transform", e.transform);
 
   d3.selectAll("path")
@@ -32,6 +32,9 @@ function handleZoom(e) {
     .attr("stroke-width", function (s) {
       return pt_rad / 4;
     });
+  console.log(e.transform.k);
+  console.log(pt_rad);
+  console.log("zoom");
 }
 let zoom = d3
   .zoom()
