@@ -1,5 +1,3 @@
-/* Popup container - can be anything you want */
-
 * {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
@@ -135,6 +133,7 @@ button {
   stroke: #c6c6c6;
   stroke-linecap: round;
   stroke-linejoin: round;
+  fill: none;
 }
 
 #wsheds {
